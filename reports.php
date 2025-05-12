@@ -1,8 +1,13 @@
 <?php
+// File: reports.php
+// Halaman laporan dan riwayat data yang diupdate dengan fitur email yang berfungsi
+
 // Header
 include_once 'includes/header.php';
 // Database
 include_once 'includes/db-connect.php';
+// Email manager
+include_once 'includes/email-manager.php';
 
 // Ambil data
 $sensorData = getCurrentSensorData();
@@ -200,151 +205,60 @@ $sensorData = getCurrentSensorData();
     </div>
 </div>
 
-<!-- Email Settings -->
-<div class="row mb-4">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="mb-0">Pengaturan Email</h5>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <table class="table">
-                            <tr>
-                                <td width="40%">Status Email</td>
-                                <td><span class="badge bg-success">Aktif</span></td>
-                            </tr>
-                            <tr>
-                                <td>Penerima</td>
-                                <td>pnm.monitoring.iot98@gmail.com</td>
-                            </tr>
-                            <tr>
-                                <td>Jadwal Pengiriman</td>
-                                <td>Setiap 23 jam (Cron: 0 */23 * * *)</td>
-                            </tr>
-                            <tr>
-                                <td>Pengiriman Terakhir</td>
-                                <td id="last-email-sent">
-                                    <?php 
-                                    if (file_exists('cron/daily_report_log.txt')) {
-                                        $logContent = file_get_contents('cron/daily_report_log.txt');
-                                        $lines = explode("\n", $logContent);
-                                        $lastSent = end($lines);
-                                        if (strpos($lastSent, 'berhasil') !== false) {
-                                            echo substr($lastSent, 0, 19);
-                                        } else {
-                                            echo 'Belum ada data';
-                                        }
-                                    } else {
-                                        echo 'Belum ada data';
-                                    }
-                                    ?>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="col-md-6">
-                        <form id="email-settings-form">
-                            <div class="mb-3">
-                                <label for="email-recipient" class="form-label">Alamat Email Penerima</label>
-                                <input type="email" class="form-control" id="email-recipient" value="pnm.monitoring.iot98@gmail.com">
-                            </div>
-                            <div class="mb-3">
-                                <label for="email-schedule" class="form-label">Jadwal Pengiriman</label>
-                                <select class="form-select" id="email-schedule">
-                                    <option value="6">Setiap 6 jam</option>
-                                    <option value="12">Setiap 12 jam</option>
-                                    <option value="23" selected>Setiap 23 jam</option>
-                                    <option value="24">Setiap 24 jam</option>
-                                    <option value="custom">Kustom</option>
-                                </select>
-                            </div>
-                            <div class="mb-3 form-check">
-                                <input type="checkbox" class="form-check-input" id="email-alerts-enable" checked>
-                                <label class="form-check-label" for="email-alerts-enable">Aktifkan notifikasi email untuk kondisi kritis</label>
-                            </div>
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary" disabled>Simpan Pengaturan</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Email Logs -->
-<div class="row">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Riwayat Pengiriman Laporan</h5>
-                <button class="btn btn-sm btn-outline-secondary" id="refresh-logs">
-                    <i class="fas fa-sync-alt"></i> Refresh
-                </button>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-striped table-hover">
-                        <thead>
-                            <tr>
-                                <th>Tanggal & Waktu</th>
-                                <th>Penerima</th>
-                                <th>Subjek</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="email-logs-table">
-                            <?php
-                            // Get email logs
-                            $emailLogs = getEmailLogs(10);
-                            
-                            if ($emailLogs && count($emailLogs) > 0) {
-                                foreach ($emailLogs as $log) {
-                                    $timestamp = isset($log['timestamp']) ? date('d/m/Y H:i:s', strtotime($log['timestamp'])) : '-';
-                                    $recipient = isset($log['recipient']) ? $log['recipient'] : '-';
-                                    $subject = isset($log['subject']) ? $log['subject'] : '-';
-                                    $status = isset($log['status']) ? $log['status'] : '-';
-                                    
-                                    echo '<tr>';
-                                    echo '<td>' . $timestamp . '</td>';
-                                    echo '<td>' . $recipient . '</td>';
-                                    echo '<td>' . $subject . '</td>';
-                                    echo '<td><span class="badge bg-success">' . $status . '</span></td>';
-                                    echo '</tr>';
-                                }
-                            } else {
-                                echo '<tr><td colspan="4" class="text-center">Tidak ada data log email</td></tr>';
-                            }
-                            ?>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="text-end mt-3">
-                    <button class="btn btn-sm btn-outline-secondary" id="load-more-logs" <?php echo (!$emailLogs || count($emailLogs) < 10) ? 'disabled' : ''; ?>>
-                        Load More <i class="fas fa-chevron-down"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- JavaScript for log refresh -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Refresh logs button
-    document.getElementById('refresh-logs').addEventListener('click', function() {
-        // In production, this would make an AJAX call to refresh the logs
-        // For now, just reload the page
-        location.reload();
-    });
-});
-</script>
+<!-- Email Panel - NEW -->
+<?php include 'includes/email-panel.html'; ?>
 
 <?php
 // Footer
 include_once 'includes/footer.php';
 ?>
+
+<!-- Custom Scripts -->
+<script src="assets/js/email-settings.js"></script>
+
+<script>
+// Initialize email logs
+$(document).ready(function() {
+    // Handle send report button
+    $('#send-report-btn').on('click', function() {
+        // Show loading state
+        const button = $(this);
+        const originalText = button.html();
+        button.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Mengirim...');
+        button.prop('disabled', true);
+        
+        // Send request to API
+        $.ajax({
+            url: 'api/send-email.php',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ type: 'manual' }),
+            success: function(response) {
+                // Restore button
+                button.html(originalText);
+                button.prop('disabled', false);
+                
+                // Show notification
+                if (response.success) {
+                    showNotification('success', 'Laporan berhasil dikirim ke email!');
+                    
+                    // Refresh email logs if they exist
+                    if (typeof loadEmailLogs === 'function') {
+                        loadEmailLogs();
+                    }
+                } else {
+                    showNotification('danger', 'Gagal mengirim laporan: ' + response.message);
+                }
+            },
+            error: function() {
+                // Restore button
+                button.html(originalText);
+                button.prop('disabled', false);
+                
+                // Show error notification
+                showNotification('danger', 'Terjadi kesalahan saat mengirim laporan.');
+            }
+        });
+    });
+});
+</script>
