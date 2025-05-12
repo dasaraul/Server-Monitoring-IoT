@@ -1,16 +1,5 @@
-# File: .htaccess
-# Konfigurasi server untuk website
-# Status: [new]
-
 # Aktifkan mesin rewrite
 RewriteEngine On
-
-# Atur base directory
-# RewriteBase /
-
-# Pengalihan HTTPS (jika dibutuhkan)
-# RewriteCond %{HTTPS} off
-# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 # Pengalihan trailing slash
 RewriteCond %{REQUEST_FILENAME} !-d
@@ -41,9 +30,6 @@ RewriteRule ^(.*)$ /index.php?page=$1 [L,QSA]
 
 # Matikan directory listing
 Options -Indexes
-
-# Set zona waktu
-# php_value date.timezone "Asia/Jakarta"
 
 # Kompresi konten
 <IfModule mod_deflate.c>

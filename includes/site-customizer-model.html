@@ -1,0 +1,224 @@
+<!-- Site Customizer Modal -->
+<div class="modal fade" id="site-customizer-modal" tabindex="-1" aria-labelledby="customizerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="customizerModalLabel">
+                    <i class="fas fa-paint-brush me-2"></i> Kustomisasi Tampilan Website
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="customizer-form">
+                    <ul class="nav nav-tabs" id="customizerTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="site-info-tab" data-bs-toggle="tab" data-bs-target="#site-info" type="button" role="tab" aria-controls="site-info" aria-selected="true">Info Website</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="branding-tab" data-bs-toggle="tab" data-bs-target="#branding" type="button" role="tab" aria-controls="branding" aria-selected="false">Branding</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="background-tab" data-bs-toggle="tab" data-bs-target="#background" type="button" role="tab" aria-controls="background" aria-selected="false">Background</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="icons-tab" data-bs-toggle="tab" data-bs-target="#icons" type="button" role="tab" aria-controls="icons" aria-selected="false">Ikon</button>
+                        </li>
+                    </ul>
+                    
+                    <div class="tab-content mt-3" id="customizerTabContent">
+                        <!-- Site Info Tab -->
+                        <div class="tab-pane fade show active" id="site-info" role="tabpanel" aria-labelledby="site-info-tab">
+                            <div class="mb-3">
+                                <label for="site-name" class="form-label">Nama Website</label>
+                                <input type="text" class="form-control" id="site-name" placeholder="Monitoring IoT">
+                            </div>
+                            <div class="mb-3">
+                                <label for="site-description" class="form-label">Deskripsi Website</label>
+                                <textarea class="form-control" id="site-description" rows="3" placeholder="Sistem Monitoring IoT untuk pemantauan parameter elektrik dengan visualisasi realtime"></textarea>
+                            </div>
+                        </div>
+                        
+                        <!-- Branding Tab -->
+                        <div class="tab-pane fade" id="branding" role="tabpanel" aria-labelledby="branding-tab">
+                            <div class="mb-3">
+                                <label for="favicon-url" class="form-label">URL Favicon</label>
+                                <input type="text" class="form-control" id="favicon-url" placeholder="assets/img/favicon.png">
+                                <div class="form-text">URL lokal atau eksternal untuk favicon website</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="brand-icon-type" class="form-label">Tipe Logo</label>
+                                <select class="form-select" id="brand-icon-type">
+                                    <option value="image">Gambar</option>
+                                    <option value="fa-icon">Font Awesome Icon</option>
+                                    <option value="gif">Gambar Animasi (GIF)</option>
+                                    <option value="video">Video</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="brand-icon-source" class="form-label">Source Logo</label>
+                                <input type="text" class="form-control" id="brand-icon-source" placeholder="assets/img/logo.png or fas fa-bolt">
+                                <div class="form-text">URL gambar, class Font Awesome, atau URL video</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Background Tab -->
+                        <div class="tab-pane fade" id="background" role="tabpanel" aria-labelledby="background-tab">
+                            <div class="mb-3 form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="background-enabled">
+                                <label class="form-check-label" for="background-enabled">Aktifkan Background Kustom</label>
+                            </div>
+                            
+                            <div id="background-fields" style="display: none;">
+                                <div class="mb-3">
+                                    <label for="background-type" class="form-label">Tipe Background</label>
+                                    <select class="form-select" id="background-type">
+                                        <option value="image">Gambar</option>
+                                        <option value="video">Video</option>
+                                        <option value="gradient">Gradient</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="background-source" class="form-label">Source Background</label>
+                                    <input type="text" class="form-control" id="background-source" placeholder="assets/img/bg.jpg or linear-gradient(to right, #4facfe 0%, #00f2fe 100%)">
+                                    <div class="form-text">URL gambar, video, atau CSS gradient</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="background-opacity" class="form-label">Opasitas: <span id="opacity-value">0.1</span></label>
+                                    <input type="range" class="form-range" min="0.05" max="1" step="0.05" value="0.1" id="background-opacity" 
+                                           oninput="document.getElementById('opacity-value').textContent = this.value">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Icons Tab -->
+                        <div class="tab-pane fade" id="icons" role="tabpanel" aria-labelledby="icons-tab">
+                            <p class="text-muted mb-3">Kustomisasi ikon untuk card metrics di dashboard.</p>
+                            
+                            <div class="accordion" id="accordionIcons">
+                                <!-- Voltage Icon -->
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="heading-voltage">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-voltage" aria-expanded="false" aria-controls="collapse-voltage">
+                                            Ikon Tegangan
+                                        </button>
+                                    </h2>
+                                    <div id="collapse-voltage" class="accordion-collapse collapse" aria-labelledby="heading-voltage" data-bs-parent="#accordionIcons">
+                                        <div class="accordion-body">
+                                            <div class="mb-3">
+                                                <label for="voltage-icon-type" class="form-label">Tipe Ikon</label>
+                                                <select class="form-select" id="voltage-icon-type">
+                                                    <option value="fa-icon">Font Awesome Icon</option>
+                                                    <option value="image">Gambar</option>
+                                                    <option value="gif">Gambar Animasi (GIF)</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="voltage-icon-source" class="form-label">Source Ikon</label>
+                                                <input type="text" class="form-control" id="voltage-icon-source" placeholder="fas fa-bolt">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="voltage-icon-color" class="form-label">Warna Ikon</label>
+                                                <input type="color" class="form-control form-control-color" id="voltage-icon-color" value="#1DCD9F">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Current Icon -->
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="heading-current">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-current" aria-expanded="false" aria-controls="collapse-current">
+                                            Ikon Arus
+                                        </button>
+                                    </h2>
+                                    <div id="collapse-current" class="accordion-collapse collapse" aria-labelledby="heading-current" data-bs-parent="#accordionIcons">
+                                        <div class="accordion-body">
+                                            <div class="mb-3">
+                                                <label for="current-icon-type" class="form-label">Tipe Ikon</label>
+                                                <select class="form-select" id="current-icon-type">
+                                                    <option value="fa-icon">Font Awesome Icon</option>
+                                                    <option value="image">Gambar</option>
+                                                    <option value="gif">Gambar Animasi (GIF)</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="current-icon-source" class="form-label">Source Ikon</label>
+                                                <input type="text" class="form-control" id="current-icon-source" placeholder="fas fa-tachometer-alt">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="current-icon-color" class="form-label">Warna Ikon</label>
+                                                <input type="color" class="form-control form-control-color" id="current-icon-color" value="#1DCD9F">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Power Icon -->
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="heading-power">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-power" aria-expanded="false" aria-controls="collapse-power">
+                                            Ikon Daya
+                                        </button>
+                                    </h2>
+                                    <div id="collapse-power" class="accordion-collapse collapse" aria-labelledby="heading-power" data-bs-parent="#accordionIcons">
+                                        <div class="accordion-body">
+                                            <div class="mb-3">
+                                                <label for="power-icon-type" class="form-label">Tipe Ikon</label>
+                                                <select class="form-select" id="power-icon-type">
+                                                    <option value="fa-icon">Font Awesome Icon</option>
+                                                    <option value="image">Gambar</option>
+                                                    <option value="gif">Gambar Animasi (GIF)</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="power-icon-source" class="form-label">Source Ikon</label>
+                                                <input type="text" class="form-control" id="power-icon-source" placeholder="fas fa-plug">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="power-icon-color" class="form-label">Warna Ikon</label>
+                                                <input type="color" class="form-control form-control-color" id="power-icon-color" value="#1DCD9F">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Energy Icon -->
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="heading-energy">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-energy" aria-expanded="false" aria-controls="collapse-energy">
+                                            Ikon Energi
+                                        </button>
+                                    </h2>
+                                    <div id="collapse-energy" class="accordion-collapse collapse" aria-labelledby="heading-energy" data-bs-parent="#accordionIcons">
+                                        <div class="accordion-body">
+                                            <div class="mb-3">
+                                                <label for="energy-icon-type" class="form-label">Tipe Ikon</label>
+                                                <select class="form-select" id="energy-icon-type">
+                                                    <option value="fa-icon">Font Awesome Icon</option>
+                                                    <option value="image">Gambar</option>
+                                                    <option value="gif">Gambar Animasi (GIF)</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="energy-icon-source" class="form-label">Source Ikon</label>
+                                                <input type="text" class="form-control" id="energy-icon-source" placeholder="fas fa-battery-half">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="energy-icon-color" class="form-label">Warna Ikon</label>
+                                                <input type="color" class="form-control form-control-color" id="energy-icon-color" value="#1DCD9F">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-primary" id="save-customizer">Simpan Pengaturan</button>
+            </div>
+        </div>
+    </div>
+</div>

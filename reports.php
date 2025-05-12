@@ -1,8 +1,4 @@
 <?php
-// File: reports.php
-// Halaman laporan dan riwayat data
-// Status: [new]
-
 // Header
 include_once 'includes/header.php';
 // Database
@@ -301,15 +297,33 @@ $sensorData = getCurrentSensorData();
                             </tr>
                         </thead>
                         <tbody id="email-logs-table">
-                            <!-- Log items will be populated using JavaScript -->
-                            <tr>
-                                <td colspan="4" class="text-center">Memuat data...</td>
-                            </tr>
+                            <?php
+                            // Get email logs
+                            $emailLogs = getEmailLogs(10);
+                            
+                            if ($emailLogs && count($emailLogs) > 0) {
+                                foreach ($emailLogs as $log) {
+                                    $timestamp = isset($log['timestamp']) ? date('d/m/Y H:i:s', strtotime($log['timestamp'])) : '-';
+                                    $recipient = isset($log['recipient']) ? $log['recipient'] : '-';
+                                    $subject = isset($log['subject']) ? $log['subject'] : '-';
+                                    $status = isset($log['status']) ? $log['status'] : '-';
+                                    
+                                    echo '<tr>';
+                                    echo '<td>' . $timestamp . '</td>';
+                                    echo '<td>' . $recipient . '</td>';
+                                    echo '<td>' . $subject . '</td>';
+                                    echo '<td><span class="badge bg-success">' . $status . '</span></td>';
+                                    echo '</tr>';
+                                }
+                            } else {
+                                echo '<tr><td colspan="4" class="text-center">Tidak ada data log email</td></tr>';
+                            }
+                            ?>
                         </tbody>
                     </table>
                 </div>
                 <div class="text-end mt-3">
-                    <button class="btn btn-sm btn-outline-secondary" id="load-more-logs" disabled>
+                    <button class="btn btn-sm btn-outline-secondary" id="load-more-logs" <?php echo (!$emailLogs || count($emailLogs) < 10) ? 'disabled' : ''; ?>>
                         Load More <i class="fas fa-chevron-down"></i>
                     </button>
                 </div>
@@ -317,6 +331,18 @@ $sensorData = getCurrentSensorData();
         </div>
     </div>
 </div>
+
+<!-- JavaScript for log refresh -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Refresh logs button
+    document.getElementById('refresh-logs').addEventListener('click', function() {
+        // In production, this would make an AJAX call to refresh the logs
+        // For now, just reload the page
+        location.reload();
+    });
+});
+</script>
 
 <?php
 // Footer

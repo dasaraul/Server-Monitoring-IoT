@@ -1,215 +1,62 @@
-/* 
- * File: assets/css/style.css
- * CSS utama untuk styling website
- * Status: [new]
- */
-
-/* ====== VARIABLES ====== */
-:root {
-    --primary-color: #007bff;
-    --secondary-color: #6c757d;
-    --success-color: #28a745;
-    --danger-color: #dc3545;
-    --warning-color: #ffc107;
-    --info-color: #17a2b8;
-    --light-color: #f8f9fa;
-    --dark-color: #343a40;
-    --body-bg: #f5f7fa;
-    --card-bg: #ffffff;
-    --card-border: #e9ecef;
-    --text-primary: #212529;
-    --text-secondary: #6c757d;
-    --text-muted: #868e96;
-    --chart-grid: #e9ecef;
-    --border-radius: 0.5rem;
-    --transition-speed: 0.3s;
-    --box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
-  }
-  
-  /* ====== GLOBAL STYLES ====== */
-  body {
-    background-color: var(--body-bg);
-    color: var(--text-primary);
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    transition: background-color var(--transition-speed), color var(--transition-speed);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .container {
-    max-width: 1200px;
-    padding: 0 15px;
-  }
-  
-  h1, h2, h3, h4, h5, h6 {
-    margin-bottom: 1rem;
-    font-weight: 600;
-  }
-  
-  a {
-    color: var(--primary-color);
-    text-decoration: none;
-    transition: color var(--transition-speed);
-  }
-  
-  a:hover {
-    color: #0056b3;
-  }
-  
-  /* ====== NAVBAR ====== */
-  .navbar {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    transition: background-color var(--transition-speed);
-  }
-  
-  .navbar-brand {
-    font-weight: 700;
-  }
-  
-  .navbar-brand strong {
-    color: var(--primary-color);
-  }
-  
-  .nav-link {
-    font-weight: 500;
-    padding: 0.5rem 1rem;
-  }
-  
-  .nav-link.active {
-    color: var(--primary-color);
-    font-weight: 600;
-  }
-  
-  /* ====== DASHBOARD ====== */
-  .dashboard-header {
-    margin-bottom: 2rem;
-  }
-  
-  .dashboard-title {
-    font-size: 1.75rem;
-    margin-bottom: 0.5rem;
-  }
-  
-  .sensor-status {
-    font-size: 0.9rem;
-  }
-  
-  /* Cards */
-  .card {
-    border-radius: var(--border-radius);
-    border: 1px solid var(--card-border);
-    box-shadow: var(--box-shadow);
-    margin-bottom: 1.5rem;
-    transition: transform 0.2s, box-shadow 0.2s;
-    background-color: var(--card-bg);
-  }
-  
-  .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.08);
-  }
-  
-  .card-header {
-    font-weight: 600;
-    border-bottom: 1px solid var(--card-border);
-    background-color: rgba(0, 0, 0, 0.01);
-    border-top-left-radius: var(--border-radius);
-    border-top-right-radius: var(--border-radius);
-  }
-  
-  .metric-card .card-body {
-    padding: 1.5rem;
-  }
-  
-  .metric-value {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-    color: var(--primary-color);
-    line-height: 1.2;
-  }
-  
-  .metric-label {
-    font-size: 0.875rem;
-    color: var(--text-secondary);
-    margin-bottom: 0.5rem;
-  }
-  
-  .progress {
-    height: 0.5rem;
-    margin-top: 0.5rem;
-    border-radius: 1rem;
-    background-color: rgba(0, 0, 0, 0.05);
-  }
-  
-  .progress-bar {
-    border-radius: 1rem;
-  }
-  
-  /* Chart containers */
-  .chart-container {
-    position: relative;
-    height: 300px;
-    margin-bottom: 1.5rem;
-  }
-  
-  .chart-wrapper {
-    height: 100%;
-    width: 100%;
-  }
-  
-  /* ====== FOOTER ====== */
-  .footer {
-    margin-top: auto;
-    padding: 1.5rem 0;
-    background-color: var(--light-color);
-    border-top: 1px solid var(--card-border);
-    transition: background-color var(--transition-speed);
-  }
-  
-  /* ====== RESPONSIVE ====== */
-  @media (max-width: 768px) {
-    .metric-value {
-      font-size: 1.5rem;
+const darkMode = {
+  init: function() {
+    // Check for saved dark mode preference
+    const darkModeStored = localStorage.getItem('darkMode') === 'true';
+    
+    // Apply dark mode if saved
+    if (darkModeStored) {
+      document.body.classList.add('dark-mode');
+      this.updateToggleButton(true);
     }
     
-    .chart-container {
-      height: 250px;
+    // Set up event listener for dark mode toggle
+    const darkModeToggle = document.getElementById('dark-mode-toggle');
+    if (darkModeToggle) {
+      darkModeToggle.addEventListener('click', () => this.toggle());
     }
-  }
+    
+    // Update charts if dark mode changes
+    window.addEventListener('darkModeChanged', () => {
+      if (typeof updateChartTheme === 'function') {
+        updateChartTheme();
+      }
+    });
+  },
   
-  /* ====== UTILITY CLASSES ====== */
-  .fw-medium {
-    font-weight: 500;
-  }
+  toggle: function() {
+    const isDarkMode = document.body.classList.toggle('dark-mode');
+    
+    // Save preference to localStorage
+    localStorage.setItem('darkMode', isDarkMode);
+    
+    // Update toggle button
+    this.updateToggleButton(isDarkMode);
+    
+    // Dispatch event for other scripts
+    window.dispatchEvent(new CustomEvent('darkModeChanged', {
+      detail: { isDarkMode }
+    }));
+  },
   
-  .refresh-btn {
-    cursor: pointer;
-    transition: transform 0.2s;
-  }
+  updateToggleButton: function(isDarkMode) {
+    const darkModeToggle = document.getElementById('dark-mode-toggle');
+    if (!darkModeToggle) return;
+    
+    if (isDarkMode) {
+      darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+      darkModeToggle.setAttribute('title', 'Switch to Light Mode');
+    } else {
+      darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+      darkModeToggle.setAttribute('title', 'Switch to Dark Mode');
+    }
+  },
   
-  .refresh-btn:hover {
-    transform: rotate(90deg);
+  isDark: function() {
+    return document.body.classList.contains('dark-mode');
   }
-  
-  /* Notification Toast */
-  .notification-toast {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    min-width: 300px;
-    z-index: 9999;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-  }
-  
-  /* Animation for fresh data */
-  @keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.5; }
-    100% { opacity: 1; }
-  }
-  
-  .fresh-data {
-    animation: pulse 1.5s ease-in-out;
-  }
+};
+
+// Initialize dark mode
+document.addEventListener('DOMContentLoaded', () => {
+  darkMode.init();
+});

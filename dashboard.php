@@ -1,8 +1,4 @@
 <?php
-// File: dashboard.php
-// Halaman dashboard monitoring
-// Status: [new]
-
 // Header
 include_once 'includes/header.php';
 ?>
@@ -21,9 +17,9 @@ include_once 'includes/header.php';
     </div>
     <div class="col-md-4 text-end">
         <div class="btn-group" role="group">
-            <button type="button" class="btn btn-outline-secondary" id="time-range-hour">1 Jam</button>
-            <button type="button" class="btn btn-outline-secondary active" id="time-range-day">24 Jam</button>
-            <button type="button" class="btn btn-outline-secondary" id="time-range-week">1 Minggu</button>
+            <a href="#" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#settingsModal">
+                <i class="fas fa-cog"></i> Pengaturan
+            </a>
         </div>
     </div>
 </div>
@@ -155,100 +151,8 @@ include_once 'includes/header.php';
     </div>
 </div>
 
-<!-- Charts Row -->
-<div class="row">
-    <!-- Voltage Chart -->
-    <div class="col-md-6 mb-4">
-        <div class="card h-100">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Grafik Tegangan</h5>
-                <div class="dropdown">
-                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownVoltage" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-cog"></i>
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownVoltage">
-                        <li><a class="dropdown-item" href="#" id="download-vavg-chart">Download Chart</a></li>
-                        <li><a class="dropdown-item" href="#" id="reset-vavg-chart">Reset Zoom</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="chart-container">
-                    <canvas id="vavg-chart"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Current Chart -->
-    <div class="col-md-6 mb-4">
-        <div class="card h-100">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Grafik Arus</h5>
-                <div class="dropdown">
-                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownCurrent" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-cog"></i>
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownCurrent">
-                        <li><a class="dropdown-item" href="#" id="download-iavg-chart">Download Chart</a></li>
-                        <li><a class="dropdown-item" href="#" id="reset-iavg-chart">Reset Zoom</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="chart-container">
-                    <canvas id="iavg-chart"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Power Chart -->
-    <div class="col-md-6 mb-4">
-        <div class="card h-100">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Grafik Daya</h5>
-                <div class="dropdown">
-                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownPower" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-cog"></i>
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownPower">
-                        <li><a class="dropdown-item" href="#" id="download-ptot-chart">Download Chart</a></li>
-                        <li><a class="dropdown-item" href="#" id="reset-ptot-chart">Reset Zoom</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="chart-container">
-                    <canvas id="ptot-chart"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- 3-Phase Voltage Chart -->
-    <div class="col-md-6 mb-4">
-        <div class="card h-100">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Grafik Tegangan 3 Fase</h5>
-                <div class="dropdown">
-                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownVoltage3" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-cog"></i>
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownVoltage3">
-                        <li><a class="dropdown-item" href="#" id="download-voltage-chart">Download Chart</a></li>
-                        <li><a class="dropdown-item" href="#" id="reset-voltage-chart">Reset Zoom</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="chart-container">
-                    <canvas id="voltage-chart"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<!-- Charts Section -->
+<?php include 'dashboard-charts.html'; ?>
 
 <!-- Connection Status -->
 <div class="row">
@@ -297,6 +201,284 @@ include_once 'includes/header.php';
         </div>
     </div>
 </div>
+
+<!-- Settings Modal -->
+<div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="settingsModalLabel">Pengaturan Dashboard</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs" id="settingsTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="display-tab" data-bs-toggle="tab" data-bs-target="#display-settings" type="button" role="tab" aria-controls="display-settings" aria-selected="true">Tampilan</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="chart-tab" data-bs-toggle="tab" data-bs-target="#chart-settings" type="button" role="tab" aria-controls="chart-settings" aria-selected="false">Grafik</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="alert-tab" data-bs-toggle="tab" data-bs-target="#alert-settings" type="button" role="tab" aria-controls="alert-settings" aria-selected="false">Notifikasi</button>
+                    </li>
+                </ul>
+                <div class="tab-content mt-3" id="settingsTabContent">
+                    <div class="tab-pane fade show active" id="display-settings" role="tabpanel" aria-labelledby="display-tab">
+                        <div class="mb-3">
+                            <label class="form-label">Tema</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="theme" id="theme-light" checked>
+                                <label class="form-check-label" for="theme-light">
+                                    Light Mode
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="theme" id="theme-dark">
+                                <label class="form-check-label" for="theme-dark">
+                                    Dark Mode
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="theme" id="theme-auto">
+                                <label class="form-check-label" for="theme-auto">
+                                    Auto (Sesuai Sistem)
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="refresh-interval" class="form-label">Interval Refresh Data</label>
+                            <select class="form-select" id="refresh-interval">
+                                <option value="1000">1 detik</option>
+                                <option value="3000" selected>3 detik</option>
+                                <option value="5000">5 detik</option>
+                                <option value="10000">10 detik</option>
+                                <option value="30000">30 detik</option>
+                                <option value="60000">1 menit</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="unit-system" class="form-label">Sistem Satuan</label>
+                            <select class="form-select" id="unit-system">
+                                <option value="metric" selected>Metrik (V, A, kW)</option>
+                                <option value="imperial">Imperial (V, A, HP)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="chart-settings" role="tabpanel" aria-labelledby="chart-tab">
+                        <div class="mb-3">
+                            <label for="chart-points" class="form-label">Jumlah Data pada Grafik</label>
+                            <select class="form-select" id="chart-points">
+                                <option value="20">20 titik data</option>
+                                <option value="60" selected>60 titik data</option>
+                                <option value="120">120 titik data</option>
+                                <option value="240">240 titik data</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="chart-animation" class="form-label">Animasi Grafik</label>
+                            <select class="form-select" id="chart-animation">
+                                <option value="fast">Cepat</option>
+                                <option value="normal" selected>Normal</option>
+                                <option value="slow">Lambat</option>
+                                <option value="none">Tidak ada</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="auto-scale" checked>
+                            <label class="form-check-label" for="auto-scale">Skala Otomatis</label>
+                        </div>
+                        <div class="mb-3 form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="show-points" checked>
+                            <label class="form-check-label" for="show-points">Tampilkan Titik Data</label>
+                        </div>
+                        <div class="mb-3 form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="fill-area" checked>
+                            <label class="form-check-label" for="fill-area">Isi Area Grafik</label>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="alert-settings" role="tabpanel" aria-labelledby="alert-tab">
+                        <div class="mb-3 form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="enable-alerts" checked>
+                            <label class="form-check-label" for="enable-alerts">Aktifkan Notifikasi</label>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Batas Notifikasi Tegangan</label>
+                            <div class="row g-3">
+                                <div class="col">
+                                    <div class="input-group">
+                                        <span class="input-group-text">Min</span>
+                                        <input type="number" class="form-control" id="voltage-alert-min" value="200">
+                                        <span class="input-group-text">V</span>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="input-group">
+                                        <span class="input-group-text">Max</span>
+                                        <input type="number" class="form-control" id="voltage-alert-max" value="240">
+                                        <span class="input-group-text">V</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Batas Notifikasi Arus</label>
+                            <div class="row g-3">
+                                <div class="col">
+                                    <div class="input-group">
+                                        <span class="input-group-text">Min</span>
+                                        <input type="number" class="form-control" id="current-alert-min" value="0">
+                                        <span class="input-group-text">A</span>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="input-group">
+                                        <span class="input-group-text">Max</span>
+                                        <input type="number" class="form-control" id="current-alert-max" value="5">
+                                        <span class="input-group-text">A</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Batas Notifikasi Daya</label>
+                            <div class="row g-3">
+                                <div class="col">
+                                    <div class="input-group">
+                                        <span class="input-group-text">Min</span>
+                                        <input type="number" class="form-control" id="power-alert-min" value="0">
+                                        <span class="input-group-text">kW</span>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="input-group">
+                                        <span class="input-group-text">Max</span>
+                                        <input type="number" class="form-control" id="power-alert-max" value="3">
+                                        <span class="input-group-text">kW</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3 form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="enable-email-alerts" checked>
+                            <label class="form-check-label" for="enable-email-alerts">Kirim Email Notifikasi</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-primary" id="save-settings">Simpan Pengaturan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php
+// Footer
+include_once 'includes/footer.php';
+?>
+
+<!-- Include enhanced charts script -->
+<script src="assets/js/enhanced-charts.js"></script>
+<script src="assets/js/statistics.js"></script>
+
+<script>
+// Initialize settings when page loads
+$(document).ready(function() {
+    // Save settings button
+    $('#save-settings').on('click', function() {
+        saveSettings();
+        $('#settingsModal').modal('hide');
+        showNotification('success', 'Pengaturan berhasil disimpan!');
+    });
+    
+    // Load settings from localStorage
+    loadSettings();
+});
+
+// Save settings to localStorage
+function saveSettings() {
+    const settings = {
+        theme: $('input[name="theme"]:checked').attr('id'),
+        refreshInterval: $('#refresh-interval').val(),
+        unitSystem: $('#unit-system').val(),
+        chartPoints: $('#chart-points').val(),
+        chartAnimation: $('#chart-animation').val(),
+        autoScale: $('#auto-scale').is(':checked'),
+        showPoints: $('#show-points').is(':checked'),
+        fillArea: $('#fill-area').is(':checked'),
+        enableAlerts: $('#enable-alerts').is(':checked'),
+        voltageAlertMin: $('#voltage-alert-min').val(),
+        voltageAlertMax: $('#voltage-alert-max').val(),
+        currentAlertMin: $('#current-alert-min').val(),
+        currentAlertMax: $('#current-alert-max').val(),
+        powerAlertMin: $('#power-alert-min').val(),
+        powerAlertMax: $('#power-alert-max').val(),
+        enableEmailAlerts: $('#enable-email-alerts').is(':checked')
+    };
+    
+    localStorage.setItem('dashboardSettings', JSON.stringify(settings));
+    
+    // Apply settings
+    applySettings(settings);
+}
+
+// Load settings from localStorage
+function loadSettings() {
+    const settingsStr = localStorage.getItem('dashboardSettings');
+    if (!settingsStr) return;
+    
+    try {
+        const settings = JSON.parse(settingsStr);
+        
+        // Set form values
+        $('#' + settings.theme).prop('checked', true);
+        $('#refresh-interval').val(settings.refreshInterval);
+        $('#unit-system').val(settings.unitSystem);
+        $('#chart-points').val(settings.chartPoints);
+        $('#chart-animation').val(settings.chartAnimation);
+        $('#auto-scale').prop('checked', settings.autoScale);
+        $('#show-points').prop('checked', settings.showPoints);
+        $('#fill-area').prop('checked', settings.fillArea);
+        $('#enable-alerts').prop('checked', settings.enableAlerts);
+        $('#voltage-alert-min').val(settings.voltageAlertMin);
+        $('#voltage-alert-max').val(settings.voltageAlertMax);
+        $('#current-alert-min').val(settings.currentAlertMin);
+        $('#current-alert-max').val(settings.currentAlertMax);
+        $('#power-alert-min').val(settings.powerAlertMin);
+        $('#power-alert-max').val(settings.powerAlertMax);
+        $('#enable-email-alerts').prop('checked', settings.enableEmailAlerts);
+        
+        // Apply settings
+        applySettings(settings);
+    } catch (e) {
+        console.error('Error loading settings:', e);
+    }
+}
+
+// Apply settings to dashboard
+function applySettings(settings) {
+    // Apply theme
+    if (settings.theme === 'theme-dark') {
+        $('body').addClass('dark-mode');
+    } else if (settings.theme === 'theme-light') {
+        $('body').removeClass('dark-mode');
+    } else if (settings.theme === 'theme-auto') {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (prefersDark) {
+            $('body').addClass('dark-mode');
+        } else {
+            $('body').removeClass('dark-mode');
+        }
+    }
+    
+    // Apply chart settings if window.chartConfig exists
+    if (window.chartConfig) {
+        window.chartConfig.displayPoints = parseInt(settings.chartPoints);
+        $('#visible-points-info').text(`Menampilkan ${settings.chartPoints} titik data`);
+    }
+}
+</script>
 
 <?php
 // Footer

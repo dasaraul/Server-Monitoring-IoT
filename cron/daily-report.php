@@ -1,22 +1,18 @@
 <?php
-// File: cron/daily-report.php
-// Skrip untuk mengirim laporan harian otomatis
-// Status: [new]
-
 // Set timezone
 date_default_timezone_set('Asia/Jakarta');
 
-// Import file koneksi
+// Import koneksi
 require_once '../includes/db-connect.php';
 
-// Log untuk debuging
+// File log
 $logFile = 'daily_report_log.txt';
 file_put_contents($logFile, date('Y-m-d H:i:s') . " - Cron job started\n", FILE_APPEND);
 
-// Ambil data sensor dari Firebase
+// Ambil data sensor
 $sensorData = getCurrentSensorData();
 
-// Jika tidak ada data, log error dan keluar
+// Check data
 if (!$sensorData) {
     file_put_contents($logFile, date('Y-m-d H:i:s') . " - Error: Tidak dapat mengambil data sensor\n", FILE_APPEND);
     exit;
@@ -41,15 +37,20 @@ $mailSent = mail($to, $subject, $content, $headers);
 if ($mailSent) {
     file_put_contents($logFile, date('Y-m-d H:i:s') . " - Email berhasil dikirim ke " . $to . "\n", FILE_APPEND);
     
-    // Simpan log pengiriman ke Firebase
+    // Simpan log ke Firebase
     saveEmailLog($to, $subject);
 } else {
     file_put_contents($logFile, date('Y-m-d H:i:s') . " - Error: Gagal mengirim email\n", FILE_APPEND);
 }
 
-// Fungsi untuk membuat konten email
+/**
+ * Membuat konten email dengan data sensor
+ * 
+ * @param array $data Data sensor
+ * @return string Konten HTML email
+ */
 function createEmailContent($data) {
-    // Dapatkan tanggal dan waktu saat ini
+    // Tanggal dan waktu
     $dateTime = date('d/m/Y H:i:s');
     
     // Mulai HTML
@@ -59,17 +60,17 @@ function createEmailContent($data) {
     <head>
         <style>
             body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; }
-            .header { background-color: #f8f9fa; padding: 20px; border-bottom: 3px solid #007bff; }
+            .header { background-color: #000000; padding: 20px; border-bottom: 3px solid #1DCD9F; color: #ffffff; }
             .content { padding: 20px; }
-            .footer { background-color: #f8f9fa; padding: 20px; text-align: center; font-size: 12px; color: #6c757d; }
+            .footer { background-color: #000000; padding: 20px; text-align: center; font-size: 12px; color: #ffffff; }
             table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-            th { background-color: #007bff; color: white; text-align: left; padding: 10px; }
+            th { background-color: #1DCD9F; color: white; text-align: left; padding: 10px; }
             td { padding: 10px; border-bottom: 1px solid #ddd; }
             tr:nth-child(even) { background-color: #f2f2f2; }
             .alert { padding: 15px; margin-bottom: 20px; border: 1px solid transparent; border-radius: 4px; }
             .alert-info { background-color: #d1ecf1; color: #0c5460; }
             .alert-warning { background-color: #fff3cd; color: #856404; }
-            .metric-value { font-size: 24px; font-weight: bold; color: #007bff; }
+            .metric-value { font-size: 24px; font-weight: bold; color: #1DCD9F; }
             .chart-img { max-width: 100%; height: auto; display: block; margin: 0 auto; }
         </style>
     </head>
@@ -126,13 +127,13 @@ function createEmailContent($data) {
         $html .= '<tr><td>Tegangan Fase 3</td><td>' . number_format($data['V3'], 2) . ' V</td><td>' . $status . '</td></tr>';
     }
     
-    // Ringkasan status sistem
+    // Ringkasan status
     $html .= '
             </table>
             
             <h2>Ringkasan Status Sistem</h2>
             <div style="padding: 15px; background-color: #e9f7ef; border-radius: 4px; margin-bottom: 20px;">
-                <h3 style="color: #27ae60;">Status: ' . getSystemStatusText($data) . '</h3>
+                <h3 style="color: #1DCD9F;">Status: ' . getSystemStatusText($data) . '</h3>
                 <p>Kondisi sistem monitoring IoT secara keseluruhan saat ini menunjukkan status normal.</p>
                 <p>Total energi terpakai saat ini: <strong>' . number_format($data['Edel'] ?? 0, 2) . ' kWh</strong></p>
             </div>
@@ -151,18 +152,30 @@ function createEmailContent($data) {
     return $html;
 }
 
-// Fungsi untuk mendapatkan status berdasarkan nilai 
+/**
+ * Mendapatkan status HTML berdasarkan nilai
+ * 
+ * @param float $value Nilai sensor
+ * @param float $min Nilai minimum normal
+ * @param float $max Nilai maksimum normal
+ * @return string HTML status dengan warna
+ */
 function getStatusHTML($value, $min, $max) {
     if ($value < $min) {
         return '<span style="color: #dc3545;">Rendah</span>';
     } else if ($value > $max) {
         return '<span style="color: #dc3545;">Tinggi</span>';
     } else {
-        return '<span style="color: #28a745;">Normal</span>';
+        return '<span style="color: #1DCD9F;">Normal</span>';
     }
 }
 
-// Fungsi untuk mendapatkan status sistem secara keseluruhan
+/**
+ * Mendapatkan status sistem keseluruhan
+ * 
+ * @param array $data Data sensor
+ * @return string Status sistem
+ */
 function getSystemStatusText($data) {
     // Cek semua nilai kritis
     $vavgStatus = ($data['Vavg'] >= 200 && $data['Vavg'] <= 240);
@@ -171,16 +184,21 @@ function getSystemStatusText($data) {
     $v3Status = ($data['V3'] >= 200 && $data['V3'] <= 240);
     $iavgStatus = ($data['Iavg'] >= 0 && $data['Iavg'] <= 5);
     
-    // Jika semua normal, kembalikan status normal
+    // Jika semua normal
     if ($vavgStatus && $v1Status && $v2Status && $v3Status && $iavgStatus) {
         return 'Normal';
     }
     
-    // Jika ada yang tidak normal, kembalikan status peringatan
     return 'Perlu Perhatian';
 }
 
-// Fungsi untuk menyimpan log pengiriman email ke Firebase
+/**
+ * Simpan log email ke Firebase
+ * 
+ * @param string $recipient Penerima email
+ * @param string $subject Subjek email
+ * @return string Respons Firebase
+ */
 function saveEmailLog($recipient, $subject) {
     global $firebaseConfig;
     
@@ -193,10 +211,10 @@ function saveEmailLog($recipient, $subject) {
         'type' => 'daily_report'
     ];
     
-    // URL Firebase untuk menyimpan log
+    // URL Firebase
     $url = $firebaseConfig['databaseURL'] . '/email_logs.json';
     
-    // Inisialisasi cURL
+    // cURL
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

@@ -1,8 +1,4 @@
 <?php
-// File: includes/db-connect.php
-// Digunakan untuk koneksi ke Firebase
-// Status: [new]
-
 // Konfigurasi Firebase
 $firebaseConfig = [
     'apiKey' => "AIzaSyDG-0wRwVgTPXj4UQvtbumkDR7EMoTl1qw",
@@ -15,7 +11,12 @@ $firebaseConfig = [
     'measurementId' => "G-R4N0R78R3L"
 ];
 
-// Fungsi untuk mendapatkan data dari Firebase menggunakan REST API
+/**
+ * Mendapatkan data dari Firebase dengan REST API
+ * 
+ * @param string $path Path di database
+ * @return array|null Data dalam bentuk array
+ */
 function getFirebaseData($path = 'sensor_data') {
     global $firebaseConfig;
     
@@ -26,17 +27,57 @@ function getFirebaseData($path = 'sensor_data') {
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     
     $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
     
-    return json_decode($response, true);
+    // Check if request successful
+    if ($httpCode >= 200 && $httpCode < 300) {
+        return json_decode($response, true);
+    }
+    
+    // Log error
+    error_log('Firebase Error: ' . $response . ' (HTTP ' . $httpCode . ')');
+    return null;
 }
 
-// Fungsi untuk mendapatkan semua data historis (jika ada)
+/**
+ * Mendapatkan semua data historis
+ * 
+ * @return array|null Data historis
+ */
 function getHistoricalData() {
     return getFirebaseData('sensor_history');
 }
 
-// Fungsi untuk mendapatkan data sensor terkini
+/**
+ * Mendapatkan data sensor terkini
+ * 
+ * @return array|null Data sensor terkini
+ */
 function getCurrentSensorData() {
     return getFirebaseData('sensor_data');
+}
+
+/**
+ * Mendapatkan log email
+ * 
+ * @param int $limit Batas jumlah log
+ * @return array|null Data log email
+ */
+function getEmailLogs($limit = 10) {
+    $logs = getFirebaseData('email_logs');
+    
+    if (!$logs) {
+        return null;
+    }
+    
+    // Sort logs by timestamp (newest first)
+    usort($logs, function($a, $b) {
+        $timeA = strtotime($a['timestamp'] ?? 0);
+        $timeB = strtotime($b['timestamp'] ?? 0);
+        return $timeB - $timeA; 
+    });
+    
+    // Limit results
+    return array_slice($logs, 0, $limit);
 }

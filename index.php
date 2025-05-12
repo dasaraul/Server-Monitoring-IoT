@@ -1,8 +1,4 @@
 <?php
-// File: index.php
-// Halaman utama website
-// Status: [new]
-
 // Header
 include_once 'includes/header.php';
 ?>
@@ -28,7 +24,7 @@ include_once 'includes/header.php';
                     </div>
                     <div class="col-md-4 text-center">
                         <div class="p-3">
-                            <i class="fas fa-microchip" style="font-size: 8rem; color: #007bff; opacity: 0.7;"></i>
+                            <i class="fas fa-microchip" style="font-size: 8rem; color: #1DCD9F; opacity: 0.7;"></i>
                         </div>
                     </div>
                 </div>
@@ -43,7 +39,7 @@ include_once 'includes/header.php';
         <div class="card metric-card h-100">
             <div class="card-body text-center">
                 <div class="mb-3">
-                    <i class="fas fa-bolt" style="font-size: 2.5rem; color: #007bff;"></i>
+                    <i class="fas fa-bolt" style="font-size: 2.5rem; color: #1DCD9F;"></i>
                 </div>
                 <h5 class="card-title">Tegangan Rata-rata</h5>
                 <div class="metric-value" id="vavg-value">-</div>
@@ -56,7 +52,7 @@ include_once 'includes/header.php';
         <div class="card metric-card h-100">
             <div class="card-body text-center">
                 <div class="mb-3">
-                    <i class="fas fa-tachometer-alt" style="font-size: 2.5rem; color: #dc3545;"></i>
+                    <i class="fas fa-tachometer-alt" style="font-size: 2.5rem; color: #1DCD9F;"></i>
                 </div>
                 <h5 class="card-title">Arus Rata-rata</h5>
                 <div class="metric-value" id="iavg-value">-</div>
@@ -69,7 +65,7 @@ include_once 'includes/header.php';
         <div class="card metric-card h-100">
             <div class="card-body text-center">
                 <div class="mb-3">
-                    <i class="fas fa-plug" style="font-size: 2.5rem; color: #28a745;"></i>
+                    <i class="fas fa-plug" style="font-size: 2.5rem; color: #1DCD9F;"></i>
                 </div>
                 <h5 class="card-title">Daya Total</h5>
                 <div class="metric-value" id="ptot-value">-</div>
@@ -82,7 +78,7 @@ include_once 'includes/header.php';
         <div class="card metric-card h-100">
             <div class="card-body text-center">
                 <div class="mb-3">
-                    <i class="fas fa-battery-half" style="font-size: 2.5rem; color: #ffc107;"></i>
+                    <i class="fas fa-battery-half" style="font-size: 2.5rem; color: #1DCD9F;"></i>
                 </div>
                 <h5 class="card-title">Energi Terpakai</h5>
                 <div class="metric-value" id="edel-value">-</div>
@@ -104,7 +100,7 @@ include_once 'includes/header.php';
                     <div class="col-md-4 mb-4">
                         <div class="d-flex align-items-start mb-2">
                             <div class="me-3">
-                                <i class="fas fa-chart-line" style="font-size: 1.5rem; color: #007bff;"></i>
+                                <i class="fas fa-chart-line" style="font-size: 1.5rem; color: #1DCD9F;"></i>
                             </div>
                             <div>
                                 <h5>Visualisasi Data Realtime</h5>
@@ -116,7 +112,7 @@ include_once 'includes/header.php';
                     <div class="col-md-4 mb-4">
                         <div class="d-flex align-items-start mb-2">
                             <div class="me-3">
-                                <i class="fas fa-envelope" style="font-size: 1.5rem; color: #28a745;"></i>
+                                <i class="fas fa-envelope" style="font-size: 1.5rem; color: #1DCD9F;"></i>
                             </div>
                             <div>
                                 <h5>Laporan Otomatis</h5>
@@ -128,7 +124,7 @@ include_once 'includes/header.php';
                     <div class="col-md-4 mb-4">
                         <div class="d-flex align-items-start mb-2">
                             <div class="me-3">
-                                <i class="fas fa-mobile-alt" style="font-size: 1.5rem; color: #dc3545;"></i>
+                                <i class="fas fa-mobile-alt" style="font-size: 1.5rem; color: #1DCD9F;"></i>
                             </div>
                             <div>
                                 <h5>Responsif di Semua Perangkat</h5>
@@ -140,7 +136,7 @@ include_once 'includes/header.php';
                     <div class="col-md-4 mb-4">
                         <div class="d-flex align-items-start mb-2">
                             <div class="me-3">
-                                <i class="fas fa-moon" style="font-size: 1.5rem; color: #6f42c1;"></i>
+                                <i class="fas fa-moon" style="font-size: 1.5rem; color: #1DCD9F;"></i>
                             </div>
                             <div>
                                 <h5>Mode Gelap</h5>
@@ -152,7 +148,7 @@ include_once 'includes/header.php';
                     <div class="col-md-4 mb-4">
                         <div class="d-flex align-items-start mb-2">
                             <div class="me-3">
-                                <i class="fas fa-exclamation-triangle" style="font-size: 1.5rem; color: #ffc107;"></i>
+                                <i class="fas fa-exclamation-triangle" style="font-size: 1.5rem; color: #1DCD9F;"></i>
                             </div>
                             <div>
                                 <h5>Notifikasi Status</h5>
@@ -164,7 +160,7 @@ include_once 'includes/header.php';
                     <div class="col-md-4 mb-4">
                         <div class="d-flex align-items-start mb-2">
                             <div class="me-3">
-                                <i class="fas fa-file-download" style="font-size: 1.5rem; color: #17a2b8;"></i>
+                                <i class="fas fa-file-download" style="font-size: 1.5rem; color: #1DCD9F;"></i>
                             </div>
                             <div>
                                 <h5>Ekspor Data</h5>

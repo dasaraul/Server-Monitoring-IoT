@@ -1,8 +1,4 @@
 <?php
-// File: includes/send-email.php
-// Skrip untuk mengirim email laporan
-// Status: [new]
-
 // Import fungsi database
 require_once 'db-connect.php';
 
@@ -59,9 +55,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ]);
 }
 
-// Fungsi untuk membuat konten email
+/**
+ * Membuat konten email dari data sensor
+ * 
+ * @param array $data Data sensor
+ * @return string Konten HTML email
+ */
 function createEmailContent($data) {
-    // Dapatkan tanggal dan waktu saat ini
+    // Tanggal dan waktu
     $dateTime = date('d/m/Y H:i:s');
     
     // Mulai HTML
@@ -71,24 +72,24 @@ function createEmailContent($data) {
     <head>
         <style>
             body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; }
-            .header { background-color: #f8f9fa; padding: 20px; border-bottom: 3px solid #007bff; }
+            .header { background-color: #000000; padding: 20px; border-bottom: 3px solid #1DCD9F; color: #ffffff; }
             .content { padding: 20px; }
-            .footer { background-color: #f8f9fa; padding: 20px; text-align: center; font-size: 12px; color: #6c757d; }
+            .footer { background-color: #000000; padding: 20px; text-align: center; font-size: 12px; color: #ffffff; }
             table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-            th { background-color: #007bff; color: white; text-align: left; padding: 10px; }
+            th { background-color: #1DCD9F; color: white; text-align: left; padding: 10px; }
             td { padding: 10px; border-bottom: 1px solid #ddd; }
             tr:nth-child(even) { background-color: #f2f2f2; }
             .alert { padding: 15px; margin-bottom: 20px; border: 1px solid transparent; border-radius: 4px; }
             .alert-info { background-color: #d1ecf1; color: #0c5460; }
             .alert-warning { background-color: #fff3cd; color: #856404; }
-            .metric-value { font-size: 24px; font-weight: bold; color: #007bff; }
+            .metric-value { font-size: 24px; font-weight: bold; color: #1DCD9F; }
             .chart-img { max-width: 100%; height: auto; display: block; margin: 0 auto; }
         </style>
     </head>
     <body>
         <div class="header">
             <h1>Laporan Monitoring IoT</h1>
-            <p>Laporan otomatis pada <strong>' . $dateTime . '</strong></p>
+            <p>Laporan manual pada <strong>' . $dateTime . '</strong></p>
         </div>
         <div class="content">
             <div class="alert alert-info">
@@ -143,7 +144,7 @@ function createEmailContent($data) {
             </table>
             
             <div class="alert alert-warning">
-                <p><strong>Catatan:</strong> Email ini dibuat secara otomatis. Untuk melihat data realtime dan grafik lengkap, silakan kunjungi dashboard monitoring.</p>
+                <p><strong>Catatan:</strong> Email ini dibuat secara manual. Untuk melihat data realtime dan grafik lengkap, silakan kunjungi dashboard monitoring.</p>
             </div>
         </div>
         <div class="footer">
@@ -156,18 +157,31 @@ function createEmailContent($data) {
     return $html;
 }
 
-// Fungsi untuk mendapatkan status berdasarkan nilai 
+/**
+ * Mendapatkan status HTML berdasarkan nilai
+ * 
+ * @param float $value Nilai sensor
+ * @param float $min Nilai minimum normal
+ * @param float $max Nilai maksimum normal
+ * @return string HTML status dengan warna
+ */
 function getStatusHTML($value, $min, $max) {
     if ($value < $min) {
         return '<span style="color: #dc3545;">Rendah</span>';
     } else if ($value > $max) {
         return '<span style="color: #dc3545;">Tinggi</span>';
     } else {
-        return '<span style="color: #28a745;">Normal</span>';
+        return '<span style="color: #1DCD9F;">Normal</span>';
     }
 }
 
-// Fungsi untuk menyimpan log pengiriman email ke Firebase
+/**
+ * Simpan log email ke Firebase
+ * 
+ * @param string $recipient Penerima email
+ * @param string $subject Subjek email
+ * @return string Respons Firebase
+ */
 function saveEmailLog($recipient, $subject) {
     global $firebaseConfig;
     
@@ -176,13 +190,14 @@ function saveEmailLog($recipient, $subject) {
         'recipient' => $recipient,
         'subject' => $subject,
         'timestamp' => date('Y-m-d\TH:i:s.v\Z'),
-        'status' => 'sent'
+        'status' => 'sent',
+        'type' => 'manual_report'
     ];
     
-    // URL Firebase untuk menyimpan log
+    // URL Firebase
     $url = $firebaseConfig['databaseURL'] . '/email_logs.json';
     
-    // Inisialisasi cURL
+    // cURL
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

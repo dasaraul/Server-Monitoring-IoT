@@ -1,0 +1,200 @@
+<!-- Chart Controls Components -->
+<div class="chart-controls mb-3">
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <div class="btn-group btn-group-sm" role="group">
+          <button type="button" class="btn btn-outline-primary" id="time-range-hour">1 Jam</button>
+          <button type="button" class="btn btn-outline-primary active" id="time-range-day">3 Jam</button>
+          <button type="button" class="btn btn-outline-primary" id="time-range-week">6 Jam</button>
+        </div>
+        <button type="button" class="btn btn-sm btn-outline-secondary ms-2" id="toggle-auto-scroll">
+          <i class="fas fa-toggle-on"></i> Auto-scroll
+        </button>
+      </div>
+      <div class="col-md-6 text-end">
+        <span class="badge bg-info me-2">
+          <i class="fas fa-info-circle"></i> <span id="visible-points-info">Menampilkan 60 titik data</span>
+        </span>
+        <span class="badge bg-secondary">
+          <i class="fas fa-arrows-alt"></i> Scroll untuk zoom
+        </span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modified Chart Containers -->
+  <div class="row">
+    <!-- Voltage Chart -->
+    <div class="col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Grafik Tegangan</h5>
+          <div class="dropdown">
+            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownVoltage" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fas fa-cog"></i>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownVoltage">
+              <li><a class="dropdown-item" href="#" id="download-vavg-chart"><i class="fas fa-download me-2"></i>Download Chart</a></li>
+              <li><a class="dropdown-item" href="#" id="reset-vavg-chart"><i class="fas fa-undo me-2"></i>Reset Zoom</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="chart-container">
+            <canvas id="vavg-chart"></canvas>
+          </div>
+          <div class="chart-legend text-center mt-2 d-none d-md-block">
+            <small class="text-muted">Geser kanan-kiri untuk melihat data historis</small>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Current Chart -->
+    <div class="col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Grafik Arus</h5>
+          <div class="dropdown">
+            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownCurrent" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fas fa-cog"></i>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownCurrent">
+              <li><a class="dropdown-item" href="#" id="download-iavg-chart"><i class="fas fa-download me-2"></i>Download Chart</a></li>
+              <li><a class="dropdown-item" href="#" id="reset-iavg-chart"><i class="fas fa-undo me-2"></i>Reset Zoom</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="chart-container">
+            <canvas id="iavg-chart"></canvas>
+          </div>
+          <div class="chart-legend text-center mt-2 d-none d-md-block">
+            <small class="text-muted">Geser kanan-kiri untuk melihat data historis</small>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Power Chart -->
+    <div class="col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Grafik Daya</h5>
+          <div class="dropdown">
+            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownPower" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fas fa-cog"></i>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownPower">
+              <li><a class="dropdown-item" href="#" id="download-ptot-chart"><i class="fas fa-download me-2"></i>Download Chart</a></li>
+              <li><a class="dropdown-item" href="#" id="reset-ptot-chart"><i class="fas fa-undo me-2"></i>Reset Zoom</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="chart-container">
+            <canvas id="ptot-chart"></canvas>
+          </div>
+          <div class="chart-legend text-center mt-2 d-none d-md-block">
+            <small class="text-muted">Geser kanan-kiri untuk melihat data historis</small>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 3-Phase Voltage Chart -->
+    <div class="col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Grafik Tegangan 3 Fase</h5>
+          <div class="dropdown">
+            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownVoltage3" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fas fa-cog"></i>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownVoltage3">
+              <li><a class="dropdown-item" href="#" id="download-voltage-chart"><i class="fas fa-download me-2"></i>Download Chart</a></li>
+              <li><a class="dropdown-item" href="#" id="reset-voltage-chart"><i class="fas fa-undo me-2"></i>Reset Zoom</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="chart-container">
+            <canvas id="voltage-chart"></canvas>
+          </div>
+          <div class="chart-legend text-center mt-2 d-none d-md-block">
+            <small class="text-muted">Geser kanan-kiri untuk melihat data historis</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Statistics Summary Cards -->
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Statistik Pengukuran</h5>
+          <button class="btn btn-sm btn-outline-primary" id="refresh-stats">
+            <i class="fas fa-sync-alt"></i> Refresh
+          </button>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th>Parameter</th>
+                    <th>Minimum</th>
+                    <th>Rata-rata</th>
+                    <th>Maksimum</th>
+                  </tr>
+                </thead>
+                <tbody id="stats-table-1">
+                  <tr>
+                    <td>Tegangan Rata-rata</td>
+                    <td><span id="vavg-min">-</span> V</td>
+                    <td><span id="vavg-avg">-</span> V</td>
+                    <td><span id="vavg-max">-</span> V</td>
+                  </tr>
+                  <tr>
+                    <td>Arus Rata-rata</td>
+                    <td><span id="iavg-min">-</span> A</td>
+                    <td><span id="iavg-avg">-</span> A</td>
+                    <td><span id="iavg-max">-</span> A</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-md-6">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th>Parameter</th>
+                    <th>Minimum</th>
+                    <th>Rata-rata</th>
+                    <th>Maksimum</th>
+                  </tr>
+                </thead>
+                <tbody id="stats-table-2">
+                  <tr>
+                    <td>Daya Total</td>
+                    <td><span id="ptot-min">-</span> kW</td>
+                    <td><span id="ptot-avg">-</span> kW</td>
+                    <td><span id="ptot-max">-</span> kW</td>
+                  </tr>
+                  <tr>
+                    <td>3-Fase Vmax</td>
+                    <td><span id="v-phase-min">-</span> V</td>
+                    <td><span id="v-phase-avg">-</span> V</td>
+                    <td><span id="v-phase-max">-</span> V</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
