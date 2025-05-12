@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laporan Monitoring Server</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .header {
+      text-align: center;
+      padding: 20px 0;
+      border-bottom: 2px solid #2563eb;
+      margin-bottom: 20px;
+    }
+    .logo {
+      width: 50px;
+      height: 50px;
+      margin-bottom: 10px;
+    }
+    h1 {
+      color: #2563eb;
+      margin: 0;
+      font-size: 24px;
+    }
+    .timestamp {
+      color: #6b7280;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+    .server-info {
+      background-color: #f3f4f6;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    .server-info table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .server-info td {
+      padding: 8px 0;
+    }
+    .server-info td:first-child {
+      width: 40%;
+      font-weight: bold;
+      color: #4b5563;
+    }
+    .section {
+      margin-bottom: 25px;
+    }
+    h2 {
+      color: #1f2937;
+      font-size: 18px;
+      border-bottom: 1px solid #e5e7eb;
+      padding-bottom: 8px;
+      margin-bottom: 15px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+    @media (max-width: 600px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .card {
+      background-color: #f9fafb;
+      border-radius: 6px;
+      padding: 15px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .metric {
+      text-align: center;
+    }
+    .metric-label {
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 5px;
+    }
+    .metric-value {
+      font-size: 22px;
+      font-weight: bold;
+      color: #2563eb;
+    }
+    .voltage-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    .power-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .chart-container {
+      margin-top: 15px;
+      height: 250px;
+      background-color: #f9fafb;
+      border-radius: 6px;
+      padding: 15px;
+      text-align: center;
+    }
+    .chart-placeholder {
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    .alerts {
+      margin-top: 20px;
+    }
+    .alert-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .alert-table th, .alert-table td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .alert-table th {
+      background-color: #f3f4f6;
+      font-weight: bold;
+      color: #4b5563;
+    }
+    .alert-warning {
+      color: #c2410c;
+      background-color: #ffedd5;
+      padding: 3px 8px;
+      border-radius: 99px;
+      font-size: 12px;
+      font-weight: bold;
+      display: inline-block;
+    }
+    .alert-info {
+      color: #1d4ed8;
+      background-color: #dbeafe;
+      padding: 3px 8px;
+      border-radius: 99px;
+      font-size: 12px;
+      font-weight: bold;
+      display: inline-block;
+    }
+    .alert-error {
+      color: #b91c1c;
+      background-color: #fee2e2;
+      padding: 3px 8px;
+      border-radius: 99px;
+      font-size: 12px;
+      font-weight: bold;
+      display: inline-block;
+    }
+    .footer {
+      margin-top: 30px;
+      text-align: center;
+      color: #6b7280;
+      font-size: 14px;
+      padding-top: 15px;
+      border-top: 1px solid #e5e7eb;
+    }
+    /* Gambar untuk grafik (versi statis untuk email) */
+    .chart-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <svg class="logo" width="50" height="50" viewBox="0 0 24 24" fill="#2563eb">
+        <path d="M13 3L4 14H11L10 21L19 10H12L13 3Z"></path>
+      </svg>
+      <h1>ServerMonitor - Laporan Berkala</h1>
+      <div class="timestamp">{{timestamp}}</div>
+    </div>
+    
+    <div class="server-info">
+      <table>
+        <tr>
+          <td>Nama Server:</td>
+          <td>{{server_name}}</td>
+        </tr>
+        <tr>
+          <td>Lokasi:</td>
+          <td>{{server_location}}</td>
+        </tr>
+        <tr>
+          <td>Uptime:</td>
+          <td>{{uptime}}</td>
+        </tr>
+        <tr>
+          <td>Status:</td>
+          <td><span style="color: #16a34a; font-weight: bold;">AKTIF</span></td>
+        </tr>
+      </table>
+    </div>
+    
+    <div class="section">
+      <h2>Status Server Terkini</h2>
+      <div class="grid">
+        <div class="card">
+          <div class="metric">
+            <div class="metric-label">Beban CPU</div>
+            <div class="metric-value">{{cpu_load}}</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="metric">
+            <div class="metric-label">Suhu</div>
+            <div class="metric-value">{{temperature}}</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="metric">
+            <div class="metric-label">Efisiensi</div>
+            <div class="metric-value">{{efficiency}}</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="metric">
+            <div class="metric-label">Energi Tersampaikan</div>
+            <div class="metric-value">{{energy}} kWh</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="section">
+      <h2>Data Tegangan (V)</h2>
+      <div class="voltage-grid">
+        <div class="card">
+          <div class="metric">
+            <div class="metric-label">Fase 1</div>
+            <div class="metric-value">{{voltage.v1}}</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="metric">
+            <div class="metric-label">Fase 2</div>
+            <div class="metric-value">{{voltage.v2}}</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="metric">
+            <div class="metric-label">Fase 3</div>
+            <div class="metric-value">{{voltage.v3}}</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="metric">
+            <div class="metric-label">Rata-rata</div>
+            <div class="metric-value">{{voltage.vavg}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="chart-container">
+        <h3>Grafik Tegangan 24 Jam Terakhir</h3>
+        <img class="chart-image" src="cid:voltage-chart" alt="Grafik Tegangan" />
+      </div>
+    </div>
+    
+    <div class="section">
+      <h2>Data Arus dan Daya</h2>
+      <div class="grid">
+        <div class="card">
+          <div class="metric">
+            <div class="metric-label">Arus Rata-rata</div>
+            <div class="metric-value">{{current}} A</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="metric">
+            <div class="metric-label">Daya Total</div>
+            <div class="metric-value">{{power}} kW</div>
+          </div>
+        </div>
+      </div>
+      <div class="chart-container">
+        <h3>Grafik Arus dan Daya 24 Jam Terakhir</h3>
+        <img class="chart-image" src="cid:current-power-chart" alt="Grafik Arus dan Daya" />
+      </div>
+    </div>
+    
+    <div class="section">
+      <h2>Statistik Konsumsi Daya</h2>
+      <div class="power-metrics">
+        <div class="card">
+          <div class="metric">
+            <div class="metric-label">Rata-rata Harian</div>
+            <div class="metric-value">{{power_metrics.daily}} kW</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="metric">
+            <div class="metric-label">Rata-rata Mingguan</div>
+            <div class="metric-value">{{power_metrics.weekly}} kW</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="metric">
+            <div class="metric-label">Rata-rata Bulanan</div>
+            <div class="metric-value">{{power_metrics.monthly}} kW</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="section alerts">
+      <h2>Log Peringatan Terbaru</h2>
+      <table class="alert-table">
+        <thead>
+          <tr>
+            <th>Waktu</th>
+            <th>Tipe</th>
+            <th>Pesan</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each alerts}}
+          <tr>
+            <td>{{this.timestamp}}</td>
+            <td>
+              {{#if (eq this.type "WARNING")}}
+              <span class="alert-warning">{{this.type}}</span>
+              {{else if (eq this.type "INFO")}}
+              <span class="alert-info">{{this.type}}</span>
+              {{else if (eq this.type "ERROR")}}
+              <span class="alert-error">{{this.type}}</span>
+              {{else}}
+              <span>{{this.type}}</span>
+              {{/if}}
+            </td>
+            <td>{{this.message}}</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+    
+    <div class="footer">
+      <p>Laporan ini dibuat secara otomatis setiap 23 jam. Jangan balas email ini.</p>
+      <p>© 2025 Dashboard Monitoring Listrik Server. Semua hak dilindungi.</p>
+    </div>
+  </div>
+</body>
+</html>
