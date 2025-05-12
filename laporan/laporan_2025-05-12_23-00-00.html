@@ -213,22 +213,22 @@
         <path d="M13 3L4 14H11L10 21L19 10H12L13 3Z"></path>
       </svg>
       <h1>ServerMonitor - Laporan Berkala</h1>
-      <div class="timestamp">{{timestamp}}</div>
+      <div class="timestamp">Senin, 12 Mei 2025, 23:00:00</div>
     </div>
     
     <div class="server-info">
       <table>
         <tr>
           <td>Nama Server:</td>
-          <td>{{server_name}}</td>
+          <td>Server-DB-01</td>
         </tr>
         <tr>
           <td>Lokasi:</td>
-          <td>{{server_location}}</td>
+          <td>Rack 3, Data Center Jakarta</td>
         </tr>
         <tr>
           <td>Uptime:</td>
-          <td>{{uptime}}</td>
+          <td>23d 14h 35m</td>
         </tr>
         <tr>
           <td>Status:</td>
@@ -243,25 +243,25 @@
         <div class="card">
           <div class="metric">
             <div class="metric-label">Beban CPU</div>
-            <div class="metric-value">{{cpu_load}}</div>
+            <div class="metric-value">68%</div>
           </div>
         </div>
         <div class="card">
           <div class="metric">
             <div class="metric-label">Suhu</div>
-            <div class="metric-value">{{temperature}}</div>
+            <div class="metric-value">45°C</div>
           </div>
         </div>
         <div class="card">
           <div class="metric">
             <div class="metric-label">Efisiensi</div>
-            <div class="metric-value">{{efficiency}}</div>
+            <div class="metric-value">92%</div>
           </div>
         </div>
         <div class="card">
           <div class="metric">
             <div class="metric-label">Energi Tersampaikan</div>
-            <div class="metric-value">{{energy}} kWh</div>
+            <div class="metric-value">1.90 kWh</div>
           </div>
         </div>
       </div>
@@ -273,25 +273,25 @@
         <div class="card">
           <div class="metric">
             <div class="metric-label">Fase 1</div>
-            <div class="metric-value">{{voltage.v1}}</div>
+            <div class="metric-value">100.40</div>
           </div>
         </div>
         <div class="card">
           <div class="metric">
             <div class="metric-label">Fase 2</div>
-            <div class="metric-value">{{voltage.v2}}</div>
+            <div class="metric-value">101.43</div>
           </div>
         </div>
         <div class="card">
           <div class="metric">
             <div class="metric-label">Fase 3</div>
-            <div class="metric-value">{{voltage.v3}}</div>
+            <div class="metric-value">99.67</div>
           </div>
         </div>
         <div class="card">
           <div class="metric">
             <div class="metric-label">Rata-rata</div>
-            <div class="metric-value">{{voltage.vavg}}</div>
+            <div class="metric-value">57.98</div>
           </div>
         </div>
       </div>
@@ -307,13 +307,13 @@
         <div class="card">
           <div class="metric">
             <div class="metric-label">Arus Rata-rata</div>
-            <div class="metric-value">{{current}} A</div>
+            <div class="metric-value">0.06613 A</div>
           </div>
         </div>
         <div class="card">
           <div class="metric">
             <div class="metric-label">Daya Total</div>
-            <div class="metric-value">{{power}} kW</div>
+            <div class="metric-value">0.01136 kW</div>
           </div>
         </div>
       </div>
@@ -329,19 +329,19 @@
         <div class="card">
           <div class="metric">
             <div class="metric-label">Rata-rata Harian</div>
-            <div class="metric-value">{{power_metrics.daily}} kW</div>
+            <div class="metric-value">1.08 kW</div>
           </div>
         </div>
         <div class="card">
           <div class="metric">
             <div class="metric-label">Rata-rata Mingguan</div>
-            <div class="metric-value">{{power_metrics.weekly}} kW</div>
+            <div class="metric-value">1.10 kW</div>
           </div>
         </div>
         <div class="card">
           <div class="metric">
             <div class="metric-label">Rata-rata Bulanan</div>
-            <div class="metric-value">{{power_metrics.monthly}} kW</div>
+            <div class="metric-value">1.07 kW</div>
           </div>
         </div>
       </div>
@@ -349,38 +349,7 @@
     
     <div class="section alerts">
       <h2>Log Peringatan Terbaru</h2>
-      {{#if alerts.length}}
-      <table class="alert-table">
-        <thead>
-          <tr>
-            <th>Waktu</th>
-            <th>Tipe</th>
-            <th>Pesan</th>
-          </tr>
-        </thead>
-        <tbody>
-          {{#each alerts}}
-          <tr>
-            <td>{{this.timestamp}}</td>
-            <td>
-              {{#if (eq this.type "WARNING")}}
-              <span class="alert-warning">{{this.type}}</span>
-              {{else if (eq this.type "INFO")}}
-              <span class="alert-info">{{this.type}}</span>
-              {{else if (eq this.type "ERROR")}}
-              <span class="alert-error">{{this.type}}</span>
-              {{else}}
-              <span>{{this.type}}</span>
-              {{/if}}
-            </td>
-            <td>{{this.message}}</td>
-          </tr>
-          {{/each}}
-        </tbody>
-      </table>
-      {{else}}
       <p>Tidak ada peringatan terbaru.</p>
-      {{/if}}
     </div>
     
     <div class="footer">

@@ -1,0 +1,21 @@
+{
+  "name": "server-monitor-email-reporter",
+  "version": "1.0.0",
+  "description": "Sistem pelaporan email berkala untuk dashboard monitoring server",
+  "main": "js/email-reporter-simple.js",
+  "scripts": {
+    "start": "node js/email-reporter-simple.js",
+    "test": "node js/test-email-simple.js",
+    "start:now": "node js/email-reporter-simple.js --send-now"
+  },
+  "author": "Diky Aditia",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "firebase-admin": "^11.11.0",
+    "handlebars": "^4.7.8",
+    "moment": "^2.29.4",
+    "node-cron": "^3.0.2",
+    "nodemailer": "^6.9.7"
+  }
+}
