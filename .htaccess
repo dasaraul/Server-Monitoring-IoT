@@ -1,0 +1,86 @@
+# File: .htaccess
+# Konfigurasi server untuk website
+# Status: [new]
+
+# Aktifkan mesin rewrite
+RewriteEngine On
+
+# Atur base directory
+# RewriteBase /
+
+# Pengalihan HTTPS (jika dibutuhkan)
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Pengalihan trailing slash
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)/$ /$1 [L,R=301]
+
+# Tangani file yang tidak ada
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /index.php?page=$1 [L,QSA]
+
+# Konfigurasi keamanan
+# Lindungi folder sensitive
+<FilesMatch "(\.htaccess|\.htpasswd|\.git|\.env|config\.php)">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Lindungi folder cron dari akses langsung
+<IfModule mod_rewrite.c>
+    RewriteRule ^cron/ - [F,L]
+</IfModule>
+
+# Batasi akses ke log
+<Files ~ "\.log$">
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+# Matikan directory listing
+Options -Indexes
+
+# Set zona waktu
+# php_value date.timezone "Asia/Jakarta"
+
+# Kompresi konten
+<IfModule mod_deflate.c>
+    # Kompresi untuk tipe konten tertentu
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/x-javascript application/json
+</IfModule>
+
+# Cache kontrol
+<IfModule mod_expires.c>
+    ExpiresActive On
+    
+    # Cache untuk file gambar, css, js
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 month"
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    
+    # Cache untuk dokumen HTML dan data
+    ExpiresByType text/html "access plus 0 seconds"
+    ExpiresByType text/xml "access plus 0 seconds"
+    ExpiresByType application/json "access plus 0 seconds"
+</IfModule>
+
+# Header keamanan
+<IfModule mod_headers.c>
+    # Hindari clickjacking
+    Header set X-Frame-Options "SAMEORIGIN"
+    
+    # Perlindungan XSS
+    Header set X-XSS-Protection "1; mode=block"
+    
+    # Hindari MIME type sniffing
+    Header set X-Content-Type-Options "nosniff"
+    
+    # Kebijakan referrer
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
