@@ -1,3 +1,4 @@
 vendor
 logs
+cron
 config/email-config.json
