@@ -1,6 +1,6 @@
 {
     "enabled": true,
-    "recipient": "pnm.monitoring.iot89@gmail.com",
+    "recipient": "PENERIMA@GMAIL.COM",
     "cc": "",
     "bcc": "",
     "schedule": "23_hours",
@@ -11,8 +11,8 @@
     "smtp_settings": {
         "host": "smtp.gmail.com",
         "port": 587,
-        "username": "pnm.monitoring.iot89@gmail.com",
-        "password": "texfvhqtmukqkjlx",
+        "username": "EMAIL_MU",
+        "password": "APP_PASSWORD_MU",
         "encryption": "tls"
     },
     "api_settings": {

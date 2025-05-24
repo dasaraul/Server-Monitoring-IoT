@@ -229,32 +229,51 @@ function sendEmailReport($data, $type = 'scheduled') {
 function sendEmailViaSmtp($to, $subject, $content, $headers) {
     global $emailConfig;
     
-    // Untuk implementasi sebenarnya, gunakan library seperti PHPMailer
-    // Berikut adalah contoh kerangka kode untuk koneksi SMTP
-    
     try {
-        // Contoh menggunakan PHPMailer
-        // require 'vendor/autoload.php';
-        // $mail = new PHPMailer\PHPMailer\PHPMailer(true);
-        // $mail->isSMTP();
-        // $mail->Host = $emailConfig['smtp_settings']['host'];
-        // $mail->SMTPAuth = true;
-        // $mail->Username = $emailConfig['smtp_settings']['username'];
-        // $mail->Password = $emailConfig['smtp_settings']['password'];
-        // $mail->SMTPSecure = $emailConfig['smtp_settings']['encryption'];
-        // $mail->Port = $emailConfig['smtp_settings']['port'];
-        // $mail->setFrom('noreply@monitoring-iottm.my.id', 'Monitoring IoT');
-        // $mail->addAddress($to);
-        // $mail->Subject = $subject;
-        // $mail->isHTML(true);
-        // $mail->Body = $content;
-        // return $mail->send();
+        // Load PHPMailer
+        require_once __DIR__ . '/../vendor/phpmailer/phpmailer/PHPMailer.php';
+        require_once __DIR__ . '/../vendor/phpmailer/phpmailer/SMTP.php';
+        require_once __DIR__ . '/../vendor/phpmailer/phpmailer/Exception.php';
         
-        // Untuk demo, gunakan mail() sebagai fallback
-        return mail($to, $subject, $content, $headers);
+        use PHPMailer\PHPMailer\PHPMailer;
+        use PHPMailer\PHPMailer\SMTP;
+        use PHPMailer\PHPMailer\Exception;
+        
+        $mail = new PHPMailer(true);
+        
+        // Server settings
+        $mail->isSMTP();
+        $mail->Host       = $emailConfig['smtp_settings']['host'];
+        $mail->SMTPAuth   = true;
+        $mail->Username   = $emailConfig['smtp_settings']['username'];
+        $mail->Password   = $emailConfig['smtp_settings']['password'];
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port       = $emailConfig['smtp_settings']['port'];
+        
+        // Recipients
+        $mail->setFrom($emailConfig['smtp_settings']['username'], 'IoT Monitoring System');
+        $mail->addAddress($to);
+        
+        // Add CC if exists
+        if (!empty($emailConfig['cc'])) {
+            $mail->addCC($emailConfig['cc']);
+        }
+        
+        // Add BCC if exists  
+        if (!empty($emailConfig['bcc'])) {
+            $mail->addBCC($emailConfig['bcc']);
+        }
+        
+        // Content
+        $mail->isHTML(true);
+        $mail->Subject = $subject;
+        $mail->Body    = $content;
+        
+        // Send
+        return $mail->send();
         
     } catch (Exception $e) {
-        error_log('Error sending SMTP email: ' . $e->getMessage());
+        error_log('PHPMailer Error: ' . $e->getMessage());
         return false;
     }
 }
