@@ -1,0 +1,23 @@
+{
+    "enabled": true,
+    "recipient": "pnm.monitoring.iot89@gmail.com",
+    "cc": "",
+    "bcc": "",
+    "schedule": "23_hours",
+    "custom_interval": 0,
+    "alert_enabled": true,
+    "last_sent": null,
+    "email_method": "smtp",
+    "smtp_settings": {
+        "host": "smtp.gmail.com",
+        "port": 587,
+        "username": "pnm.monitoring.iot89@gmail.com",
+        "password": "texfvhqtmukqkjlx",
+        "encryption": "tls"
+    },
+    "api_settings": {
+        "provider": "sendgrid",
+        "api_key": "",
+        "api_url": ""
+    }
+}

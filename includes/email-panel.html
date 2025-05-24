@@ -1,0 +1,266 @@
+<!-- Email Panel untuk Reports Page -->
+<div class="card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Pengaturan Email</h5>
+        <div>
+            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#emailSettingsModal">
+                <i class="fas fa-cog"></i> Konfigurasi
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table">
+                    <tr>
+                        <td width="40%">Status Email</td>
+                        <td><span id="email-status-badge" class="badge bg-success">Aktif</span></td>
+                    </tr>
+                    <tr>
+                        <td>Penerima</td>
+                        <td id="email-recipient-display">tamskun29@gmail.com</td>
+                    </tr>
+                    <tr>
+                        <td>Jadwal Pengiriman</td>
+                        <td id="email-schedule-display">Setiap 23 jam (Cron: 0 */23 * * *)</td>
+                    </tr>
+                    <tr>
+                        <td>Pengiriman Terakhir</td>
+                        <td id="email-last-sent-display">
+                            <?php 
+                            if (file_exists('logs/email.log')) {
+                                $logContent = file_get_contents('logs/email.log');
+                                $lines = explode("\n", $logContent);
+                                $lastSent = '';
+                                
+                                // Find the last successful email
+                                foreach(array_reverse($lines) as $line) {
+                                    if (strpos($line, 'SUCCESS') !== false && strpos($line, 'scheduled') !== false) {
+                                        preg_match('/\[(.*?)\]/', $line, $matches);
+                                        if (!empty($matches[1])) {
+                                            $lastSent = $matches[1];
+                                            break;
+                                        }
+                                    }
+                                }
+                                
+                                echo !empty($lastSent) ? $lastSent : 'Belum ada data';
+                            } else {
+                                echo 'Belum ada data';
+                            }
+                            ?>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <div class="alert alert-info">
+                    <h6><i class="fas fa-info-circle me-2"></i> Info Pengiriman Email</h6>
+                    <p class="mb-1">Email laporan dapat dikirim secara:</p>
+                    <ul class="mb-1">
+                        <li>Otomatis terjadwal (sesuai pengaturan)</li>
+                        <li>Manual (kapan saja)</li>
+                        <li>Alert (ketika parameter melebihi batas)</li>
+                    </ul>
+                    <p class="mb-0">Gunakan tombol di bawah untuk mengirim laporan manual.</p>
+                </div>
+                
+                <div class="mt-3 text-center">
+                    <button id="send-manual-report-btn" class="btn btn-primary">
+                        <i class="fas fa-paper-plane me-1"></i> Kirim Laporan Sekarang
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Email Log -->
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Riwayat Pengiriman Email</h5>
+        <button class="btn btn-sm btn-outline-secondary" id="refresh-email-logs">
+            <i class="fas fa-sync-alt"></i> Refresh
+        </button>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover" id="email-logs-table">
+                <thead>
+                    <tr>
+                        <th>Tanggal & Waktu</th>
+                        <th>Penerima</th>
+                        <th>Tipe</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Log items will be populated using JavaScript -->
+                    <tr>
+                        <td colspan="4" class="text-center">Memuat data...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="text-end mt-3">
+            <button class="btn btn-sm btn-outline-secondary" id="load-more-email-logs">
+                Load More <i class="fas fa-chevron-down"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Include Email Settings Modal -->
+<?php include 'includes/email-settings-modal.html'; ?>
+
+<script>
+// Load email logs
+function loadEmailLogs(limit = 10, offset = 0) {
+    $.ajax({
+        url: 'api/email-logs.php',
+        type: 'GET',
+        data: {
+            limit: limit,
+            offset: offset
+        },
+        dataType: 'json',
+        success: function(response) {
+            if (response.success && response.logs && response.logs.length > 0) {
+                const logsTable = $('#email-logs-table tbody');
+                
+                // If offset is 0, clear the table
+                if (offset === 0) {
+                    logsTable.empty();
+                }
+                
+                // Add logs to table
+                response.logs.forEach(function(log) {
+                    const row = $('<tr>');
+                    
+                    // Format date
+                    const date = new Date(log.timestamp);
+                    const formattedDate = date.toLocaleString('id-ID');
+                    
+                    // Format type
+                    let typeLabel = log.type || 'manual';
+                    let typeText = '';
+                    
+                    switch(typeLabel) {
+                        case 'scheduled':
+                            typeText = '<span class="badge bg-primary">Terjadwal</span>';
+                            break;
+                        case 'manual':
+                            typeText = '<span class="badge bg-info">Manual</span>';
+                            break;
+                        case 'alert':
+                            typeText = '<span class="badge bg-warning">Alert</span>';
+                            break;
+                        default:
+                            typeText = '<span class="badge bg-secondary">' + typeLabel + '</span>';
+                    }
+                    
+                    // Format status
+                    const statusText = log.status === 'sent' || log.status === 'success' ? 
+                        '<span class="badge bg-success">Sukses</span>' : 
+                        '<span class="badge bg-danger">Gagal</span>';
+                    
+                    // Add cells
+                    row.append($('<td>').text(formattedDate));
+                    row.append($('<td>').text(log.recipient));
+                    row.append($('<td>').html(typeText));
+                    row.append($('<td>').html(statusText));
+                    
+                    // Add row to table
+                    logsTable.append(row);
+                });
+                
+                // Enable/disable load more button
+                $('#load-more-email-logs').prop('disabled', response.logs.length < limit);
+                
+                // If no logs after the first load, show a message
+                if (offset === 0 && response.logs.length === 0) {
+                    logsTable.html('<tr><td colspan="4" class="text-center">Tidak ada log email</td></tr>');
+                }
+            } else if (offset === 0) {
+                // Show no logs message on first load
+                $('#email-logs-table tbody').html('<tr><td colspan="4" class="text-center">Tidak ada log email</td></tr>');
+                $('#load-more-email-logs').prop('disabled', true);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading email logs:', error);
+            $('#email-logs-table tbody').html('<tr><td colspan="4" class="text-center">Error: Gagal memuat log</td></tr>');
+            $('#load-more-email-logs').prop('disabled', true);
+            
+            showNotification('danger', 'Gagal memuat log email: ' + error);
+        }
+    });
+}
+
+// Send manual report
+function sendManualReport() {
+    // Disable button
+    const button = $('#send-manual-report-btn');
+    const originalText = button.html();
+    button.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Mengirim...');
+    button.prop('disabled', true);
+    
+    // Send request
+    $.ajax({
+        url: 'api/send-email.php',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            type: 'manual'
+        }),
+        success: function(response) {
+            // Restore button
+            button.html(originalText);
+            button.prop('disabled', false);
+            
+            if (response.success) {
+                showNotification('success', 'Laporan berhasil dikirim!');
+                // Refresh logs
+                loadEmailLogs();
+            } else {
+                showNotification('danger', 'Gagal mengirim laporan: ' + response.message);
+            }
+        },
+        error: function(xhr, status, error) {
+            // Restore button
+            button.html(originalText);
+            button.prop('disabled', false);
+            
+            console.error('Error sending report:', error);
+            showNotification('danger', 'Terjadi kesalahan saat mengirim laporan');
+        }
+    });
+}
+
+// When document is ready
+$(document).ready(function() {
+    // Load email logs
+    loadEmailLogs();
+    
+    // Initialize email settings manager
+    if (typeof emailSettingsManager !== 'undefined') {
+        emailSettingsManager.init();
+    }
+    
+    // Load more logs button
+    $('#load-more-email-logs').on('click', function() {
+        const currentRows = $('#email-logs-table tbody tr').length;
+        loadEmailLogs(10, currentRows);
+    });
+    
+    // Refresh logs button
+    $('#refresh-email-logs').on('click', function() {
+        loadEmailLogs();
+    });
+    
+    // Send manual report button
+    $('#send-manual-report-btn').on('click', function() {
+        sendManualReport();
+    });
+});
+</script>

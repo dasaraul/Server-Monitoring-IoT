@@ -1,0 +1,251 @@
+body.dark-mode {
+  --body-bg: #000000;
+  --card-bg: #222222;
+  --card-border: #333333;
+  --text-primary: #f9fafb;
+  --text-secondary: #d1d5db;
+  --text-muted: #adb5bd; /* Brightened for better readability */
+  --chart-grid: #333333;
+  --box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+  --input-bg: #2a2a2a;
+  --input-border: #444444;
+  --input-text: #f9fafb;
+  --input-placeholder: #adb5bd;
+  --btn-hover: #333333;
+  background-color: var(--body-bg);
+  color: var(--text-primary);
+}
+
+body.dark-mode .navbar {
+  background-color: #000000 !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode .navbar-light .navbar-brand,
+body.dark-mode .navbar-light .navbar-nav .nav-link {
+  color: var(--text-primary);
+}
+
+body.dark-mode .navbar-light .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+body.dark-mode .navbar-light .navbar-toggler {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+body.dark-mode .footer {
+  background-color: #000000;
+  border-color: #333333;
+}
+
+body.dark-mode .card {
+  background-color: var(--card-bg);
+  border-color: var(--card-border);
+}
+
+body.dark-mode .card-header {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-color: var(--card-border);
+}
+
+/* Improved button styles for dark mode */
+body.dark-mode .btn-outline-secondary {
+  color: #e9ecef;
+  border-color: #4b5563;
+}
+
+body.dark-mode .btn-outline-secondary:hover {
+  background-color: #4b5563;
+  color: #ffffff;
+}
+
+body.dark-mode .btn-outline-primary {
+  color: #1DCD9F;
+  border-color: #1DCD9F;
+}
+
+body.dark-mode .btn-outline-primary:hover {
+  background-color: #1DCD9F;
+  color: #000000;
+}
+
+/* Progress bar improvements */
+body.dark-mode .progress {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Improved table contrast */
+body.dark-mode .table {
+  color: var(--text-primary);
+}
+
+body.dark-mode .table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode .table td,
+body.dark-mode .table th {
+  border-color: #333333;
+}
+
+/* Modal improvements */
+body.dark-mode .modal-content {
+  background-color: var(--card-bg);
+  border-color: var(--card-border);
+}
+
+body.dark-mode .modal-header {
+  border-color: var(--card-border);
+}
+
+body.dark-mode .modal-footer {
+  border-color: var(--card-border);
+}
+
+/* Form enhancements for dark mode */
+body.dark-mode .form-control {
+  background-color: var(--input-bg);
+  border-color: var(--input-border);
+  color: var(--input-text);
+}
+
+body.dark-mode .form-control:focus {
+  background-color: var(--input-bg);
+  color: var(--input-text);
+  border-color: var(--primary-color);
+}
+
+body.dark-mode .form-control::placeholder {
+  color: var(--input-placeholder);
+  opacity: 0.7;
+}
+
+body.dark-mode .form-select {
+  background-color: var(--input-bg);
+  color: var(--input-text);
+  border-color: var(--input-border);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+}
+
+body.dark-mode .input-group-text {
+  background-color: #444444;
+  border-color: #444444;
+  color: var(--input-text);
+}
+
+/* Chart enhancements for dark mode */
+body.dark-mode .chart-wrapper canvas {
+  filter: brightness(0.9) contrast(1.1);
+}
+
+/* Dark mode toggle button */
+body.dark-mode #dark-mode-toggle {
+  color: #1DCD9F;
+  border-color: #1DCD9F;
+}
+
+body.dark-mode #dark-mode-toggle:hover {
+  background-color: rgba(29, 205, 159, 0.1);
+}
+
+/* Badge colors for dark mode */
+body.dark-mode .badge.bg-success {
+  background-color: #1DCD9F !important;
+}
+
+body.dark-mode .badge.bg-danger {
+  background-color: #dc2626 !important;
+}
+
+body.dark-mode .badge.bg-warning {
+  background-color: #d97706 !important;
+  color: #fff;
+}
+
+body.dark-mode .badge.bg-info {
+  background-color: #0ea5e9 !important;
+  color: #fff;
+}
+
+/* List group improvements */
+body.dark-mode .list-group-item {
+  background-color: var(--card-bg);
+  border-color: var(--card-border);
+  color: var(--text-primary);
+}
+
+/* Tab navigation improvements */
+body.dark-mode .nav-tabs {
+  border-bottom-color: #444444;
+}
+
+body.dark-mode .nav-tabs .nav-link {
+  color: var(--text-secondary);
+}
+
+body.dark-mode .nav-tabs .nav-link:hover {
+  border-color: #444444 #444444 #444444;
+  color: var(--text-primary);
+}
+
+body.dark-mode .nav-tabs .nav-link.active {
+  color: #1DCD9F;
+  background-color: var(--card-bg);
+  border-color: #444444 #444444 transparent;
+}
+
+/* Accordion improvements */
+body.dark-mode .accordion-item {
+  background-color: var(--card-bg);
+  border-color: var(--card-border);
+}
+
+body.dark-mode .accordion-button {
+  background-color: var(--card-bg);
+  color: var(--text-primary);
+}
+
+body.dark-mode .accordion-button:not(.collapsed) {
+  background-color: rgba(29, 205, 159, 0.1);
+  color: #1DCD9F;
+}
+
+body.dark-mode .accordion-button::after {
+  filter: invert(1);
+}
+
+/* Improved dropdown menu */
+body.dark-mode .dropdown-menu {
+  background-color: #222222;
+  border-color: #333333;
+}
+
+body.dark-mode .dropdown-item {
+  color: var(--text-primary);
+}
+
+body.dark-mode .dropdown-item:hover,
+body.dark-mode .dropdown-item:focus {
+  background-color: #333333;
+  color: #1DCD9F;
+}
+
+body.dark-mode .dropdown-divider {
+  border-color: #444444;
+}
+
+/* Tooltip improvements */
+body.dark-mode .tooltip-inner {
+  background-color: #000000;
+  color: #f9fafb;
+}
+
+/* Custom improvements for charts in dark mode */
+body.dark-mode .chart-container {
+  background-color: var(--card-bg);
+}
+
+body.dark-mode .chart-legend {
+  color: var(--text-muted);
+}

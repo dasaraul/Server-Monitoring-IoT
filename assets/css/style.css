@@ -1,0 +1,244 @@
+:root {
+  --primary-color: #1DCD9F;
+  --primary-dark: #169976;
+  --dark-color: #000000;
+  --dark-secondary: #222222;
+  --light-color: #f8f9fa;
+  --card-bg: #ffffff;
+  --card-border: #e9ecef;
+  --text-primary: #212529;
+  --text-secondary: #6c757d;
+  --text-muted: #868e96;
+  --chart-grid: #e9ecef;
+  --border-radius: 0.5rem;
+  --transition-speed: 0.3s;
+  --box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+}
+
+body {
+  background-color: var(--light-color);
+  color: var(--text-primary);
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  transition: background-color var(--transition-speed), color var(--transition-speed);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  max-width: 1200px;
+  padding: 0 15px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color var(--transition-speed);
+}
+
+a:hover {
+  color: var(--primary-dark);
+}
+
+.navbar {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: background-color var(--transition-speed);
+}
+
+.navbar-brand {
+  font-weight: 700;
+}
+
+.navbar-brand strong {
+  color: var(--primary-color);
+}
+
+.nav-link {
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+}
+
+.nav-link.active {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.dashboard-header {
+  margin-bottom: 2rem;
+}
+
+.dashboard-title {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.sensor-status {
+  font-size: 0.9rem;
+}
+
+.card {
+  border-radius: var(--border-radius);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--box-shadow);
+  margin-bottom: 1.5rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+  background-color: var(--card-bg);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.08);
+}
+
+.card-header {
+  font-weight: 600;
+  border-bottom: 1px solid var(--card-border);
+  background-color: rgba(0, 0, 0, 0.01);
+  border-top-left-radius: var(--border-radius);
+  border-top-right-radius: var(--border-radius);
+}
+
+.metric-card .card-body {
+  padding: 1.5rem;
+}
+
+.metric-value {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--primary-color);
+  line-height: 1.2;
+}
+
+.metric-label {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.progress {
+  height: 0.5rem;
+  margin-top: 0.5rem;
+  border-radius: 1rem;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.progress-bar {
+  border-radius: 1rem;
+}
+
+.chart-container {
+  position: relative;
+  height: 300px;
+  margin-bottom: 1.5rem;
+}
+
+.chart-wrapper {
+  height: 100%;
+  width: 100%;
+}
+
+.footer {
+  margin-top: auto;
+  padding: 1.5rem 0;
+  background-color: var(--dark-color);
+  color: white;
+  border-top: 1px solid var(--dark-secondary);
+  transition: background-color var(--transition-speed);
+}
+
+.footer p {
+  color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .metric-value {
+    font-size: 1.5rem;
+  }
+  
+  .chart-container {
+    height: 250px;
+  }
+}
+
+.fw-medium {
+  font-weight: 500;
+}
+
+.refresh-btn {
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.refresh-btn:hover {
+  transform: rotate(90deg);
+}
+
+.notification-toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  min-width: 300px;
+  z-index: 9999;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+.fresh-data {
+  animation: pulse 1.5s ease-in-out;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-primary:hover, .btn-primary:focus {
+  background-color: var(--primary-dark);
+  border-color: var(--primary-dark);
+}
+
+.btn-outline-primary {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-outline-primary:hover, .btn-outline-primary:focus {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+}
+
+.bg-primary {
+  background-color: var(--primary-color) !important;
+}
+
+.bg-success {
+  background-color: var(--primary-color) !important;
+}
+
+.text-primary {
+  color: var(--primary-color) !important;
+}
+
+.badge.bg-success {
+  background-color: var(--primary-color) !important;
+}
+
+.badge.bg-danger {
+  background-color: #dc3545 !important;
+}
+
+.badge.bg-warning {
+  background-color: #ffc107 !important;
+}
