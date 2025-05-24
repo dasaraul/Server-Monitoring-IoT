@@ -8,7 +8,7 @@ const emailSettingsManager = {
     // Default settings
     defaultSettings: {
         enabled: true,
-        recipient: 'tamskun29@gmail.com',
+        recipient: 'pnm.monitoring.iot98@gmail.com',
         cc: '',
         bcc: '',
         schedule: '23_hours',

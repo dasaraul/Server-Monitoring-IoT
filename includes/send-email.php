@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     
     // Konfigurasi email
-    $to = "tamskun29@gmail.com";
+    $to = "pnm.monitoring.iot98@gmail.com";
     $subject = "Laporan Monitoring IoT - " . date('d/m/Y H:i');
     
     // Buat konten email
@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Header email
     $headers = "MIME-Version: 1.0" . "\r\n";
     $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-    $headers .= "From: Monitoring IoT <noreply@monitoring-iottm.my.id>" . "\r\n";
+    $headers .= "From: Monitoring IoT <KORUPTOR KONTOL>" . "\r\n";
     
     // Coba kirim email
     $mailSent = mail($to, $subject, $content, $headers);

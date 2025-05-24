@@ -91,7 +91,7 @@ function validateEmailConfig(&$config) {
     // Validasi recipient
     if (isset($config['recipient'])) {
         if (!filter_var($config['recipient'], FILTER_VALIDATE_EMAIL)) {
-            $config['recipient'] = 'tamskun29@gmail.com'; // Default jika tidak valid
+            $config['recipient'] = 'pnm.monitoring.iot98@gmail.com'; // Default jika tidak valid
         }
     }
     

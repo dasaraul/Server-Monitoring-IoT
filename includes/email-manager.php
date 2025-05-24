@@ -5,10 +5,10 @@
 // Konfigurasi email default
 $emailConfig = [
     'enabled' => true,
-    'recipient' => 'tamskun29@gmail.com',
+    'recipient' => 'pnm.monitoring.iot98@gmail.com',
     'cc' => '',
     'bcc' => '',
-    'schedule' => '6_hours', // 6_hours, 12_hours, 23_hours, 24_hours, custom
+    'schedule' => '23_hours', // 6_hours, 12_hours, 23_hours, 24_hours, custom
     'custom_interval' => 0, // Dalam detik, untuk pengaturan kustom
     'alert_enabled' => true,
     'last_sent' => null,
@@ -169,7 +169,7 @@ function sendEmailReport($data, $type = 'scheduled') {
     // Header email
     $headers = "MIME-Version: 1.0" . "\r\n";
     $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-    $headers .= "From: Monitoring IoT <noreply@monitoring-iottm.my.id>" . "\r\n";
+    $headers .= "From: Monitoring IoT <KORUPTOR KONTOL>" . "\r\n";
     
     // Tambahkan CC jika ada
     if (!empty($emailConfig['cc'])) {
@@ -229,51 +229,32 @@ function sendEmailReport($data, $type = 'scheduled') {
 function sendEmailViaSmtp($to, $subject, $content, $headers) {
     global $emailConfig;
     
+    // Untuk implementasi sebenarnya, gunakan library seperti PHPMailer
+    // Berikut adalah contoh kerangka kode untuk koneksi SMTP
+    
     try {
-        // Load PHPMailer
-        require_once __DIR__ . '/../vendor/phpmailer/phpmailer/PHPMailer.php';
-        require_once __DIR__ . '/../vendor/phpmailer/phpmailer/SMTP.php';
-        require_once __DIR__ . '/../vendor/phpmailer/phpmailer/Exception.php';
+        // Contoh menggunakan PHPMailer
+        // require 'vendor/autoload.php';
+        // $mail = new PHPMailer\PHPMailer\PHPMailer(true);
+        // $mail->isSMTP();
+        // $mail->Host = $emailConfig['smtp_settings']['host'];
+        // $mail->SMTPAuth = true;
+        // $mail->Username = $emailConfig['smtp_settings']['username'];
+        // $mail->Password = $emailConfig['smtp_settings']['password'];
+        // $mail->SMTPSecure = $emailConfig['smtp_settings']['encryption'];
+        // $mail->Port = $emailConfig['smtp_settings']['port'];
+        // $mail->setFrom('KORUPTOR KONTOL', 'Monitoring IoT');
+        // $mail->addAddress($to);
+        // $mail->Subject = $subject;
+        // $mail->isHTML(true);
+        // $mail->Body = $content;
+        // return $mail->send();
         
-        use PHPMailer\PHPMailer\PHPMailer;
-        use PHPMailer\PHPMailer\SMTP;
-        use PHPMailer\PHPMailer\Exception;
-        
-        $mail = new PHPMailer(true);
-        
-        // Server settings
-        $mail->isSMTP();
-        $mail->Host       = $emailConfig['smtp_settings']['host'];
-        $mail->SMTPAuth   = true;
-        $mail->Username   = $emailConfig['smtp_settings']['username'];
-        $mail->Password   = $emailConfig['smtp_settings']['password'];
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port       = $emailConfig['smtp_settings']['port'];
-        
-        // Recipients
-        $mail->setFrom($emailConfig['smtp_settings']['username'], 'IoT Monitoring System');
-        $mail->addAddress($to);
-        
-        // Add CC if exists
-        if (!empty($emailConfig['cc'])) {
-            $mail->addCC($emailConfig['cc']);
-        }
-        
-        // Add BCC if exists  
-        if (!empty($emailConfig['bcc'])) {
-            $mail->addBCC($emailConfig['bcc']);
-        }
-        
-        // Content
-        $mail->isHTML(true);
-        $mail->Subject = $subject;
-        $mail->Body    = $content;
-        
-        // Send
-        return $mail->send();
+        // Untuk demo, gunakan mail() sebagai fallback
+        return mail($to, $subject, $content, $headers);
         
     } catch (Exception $e) {
-        error_log('PHPMailer Error: ' . $e->getMessage());
+        error_log('Error sending SMTP email: ' . $e->getMessage());
         return false;
     }
 }
@@ -298,7 +279,7 @@ function sendEmailViaApi($to, $subject, $content) {
                 // Contoh kode untuk Sendgrid
                 // require 'vendor/autoload.php';
                 // $email = new \SendGrid\Mail\Mail();
-                // $email->setFrom("noreply@monitoring-iottm.my.id", "Monitoring IoT");
+                // $email->setFrom("KORUPTOR KONTOL", "Monitoring IoT");
                 // $email->setSubject($subject);
                 // $email->addTo($to);
                 // $email->addContent("text/html", $content);
@@ -314,7 +295,7 @@ function sendEmailViaApi($to, $subject, $content) {
                 // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                 // curl_setopt($ch, CURLOPT_POST, true);
                 // curl_setopt($ch, CURLOPT_POSTFIELDS, [
-                //     'from' => 'Monitoring IoT <noreply@monitoring-iottm.my.id>',
+                //     'from' => 'Monitoring IoT <KORUPTOR KONTOL>',
                 //     'to' => $to,
                 //     'subject' => $subject,
                 //     'html' => $content
@@ -327,7 +308,7 @@ function sendEmailViaApi($to, $subject, $content) {
                 // Fallback ke mail() untuk demo
                 $headers = "MIME-Version: 1.0" . "\r\n";
                 $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-                $headers .= "From: Monitoring IoT <noreply@monitoring-iottm.my.id>" . "\r\n";
+                $headers .= "From: Monitoring IoT <KORUPTOR KONTOL>" . "\r\n";
                 return mail($to, $subject, $content, $headers);
         }
     } catch (Exception $e) {

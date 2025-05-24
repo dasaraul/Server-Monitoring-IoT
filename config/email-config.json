@@ -1,9 +1,9 @@
 {
     "enabled": true,
     "recipient": "notifpanel@monitoring-iottm.my.id",
-    "cc": "Notif Panel",
+    "cc": "JOKOWI@raja.jawa",
     "bcc": "",
-    "schedule": "6_hours",
+    "schedule": "23_hours",
     "custom_interval": 1,
     "alert_enabled": true,
     "last_sent": null,
@@ -11,8 +11,8 @@
     "smtp_settings": {
         "host": "",
         "port": 587,
-        "username": "EMAIL_MU",
-        "password": "APP_PASSWORD_MU",
+        "username": "",
+        "password": "",
         "encryption": "tls"
     },
     "api_settings": {

@@ -19,7 +19,7 @@ if (!$sensorData) {
 }
 
 // Konfigurasi email
-$to = "tamskun29@gmail.com";
+$to = "pnm.monitoring.iot98@gmail.com";
 $subject = "Laporan Harian Monitoring IoT - " . date('d/m/Y');
 
 // Buat konten email
@@ -28,7 +28,7 @@ $content = createEmailContent($sensorData);
 // Header email
 $headers = "MIME-Version: 1.0" . "\r\n";
 $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-$headers .= "From: Monitoring IoT <noreply@monitoring-iottm.my.id>" . "\r\n";
+$headers .= "From: Monitoring IoT <KORUPTOR KONTOL>" . "\r\n";
 
 // Kirim email
 $mailSent = mail($to, $subject, $content, $headers);
